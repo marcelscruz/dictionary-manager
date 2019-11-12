@@ -1,0 +1,17 @@
+{
+  "name": "colours-cycle",
+  "table": [
+    {
+      "domain": "Stonegrey",
+      "range": "Dark Grey"
+    },
+    {
+      "domain": "Dark Grey",
+      "range": "Stonegrey"
+    },
+    {
+      "domain": "Midnight Blue",
+      "range": "Dark Blue"
+    }
+  ]
+}

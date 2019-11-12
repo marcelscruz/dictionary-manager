@@ -1,0 +1,17 @@
+{
+  "name": "colours-consistent",
+  "table": [
+    {
+      "domain": "Stonegrey",
+      "range": "Dark Grey"
+    },
+    {
+      "domain": "Midnight Black",
+      "range": "Black"
+    },
+    {
+      "domain": "Mystic Silver",
+      "range": "Silver"
+    }
+  ]
+}

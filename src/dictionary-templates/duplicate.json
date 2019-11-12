@@ -1,0 +1,17 @@
+{
+  "name": "colours-duplicate",
+  "table": [
+    {
+      "domain": "Stonegrey",
+      "range": "Dark Grey"
+    },
+    {
+      "domain": "Stonegrey",
+      "range": "Dark Grey"
+    },
+    {
+      "domain": "Caribbean Sea",
+      "range": "Turquoise"
+    }
+  ]
+}

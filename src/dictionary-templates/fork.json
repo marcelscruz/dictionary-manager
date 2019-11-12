@@ -1,0 +1,17 @@
+{
+  "name": "colours-fork",
+  "table": [
+    {
+      "domain": "Stonegrey",
+      "range": "Dark Grey"
+    },
+    {
+      "domain": "Stonegrey",
+      "range": "Anthracite"
+    },
+    {
+      "domain": "Midnight Blue",
+      "range": "Dark Blue"
+    }
+  ]
+}
