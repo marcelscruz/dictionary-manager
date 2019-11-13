@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import uuid from 'uuid/v4'
 import validateDictionary from 'utils/validators'
 
 function Modal() {
@@ -8,6 +9,10 @@ function Modal() {
     range: '',
   }
 
+  const [metadata, setMetadata] = useState({
+    id: '',
+    timestamp: '',
+  })
   const [title, setTitle] = useState('')
   const [table, setTable] = useState([emptyRow])
   const [hasErrors, setHasErrors] = useState(false)
@@ -88,12 +93,43 @@ function Modal() {
   }
 
   const handleSaveDictionary = () => {
-    const dictionary = {
+    const id = metadata.id || uuid()
+    const timestamp = metadata.timestamp || new Date()
+
+    const updatedDictionary = {
+      metadata: {
+        id,
+        timestamp,
+      },
       title,
       table,
     }
 
-    console.log('dictionary ->', dictionary)
+    let updatedDictionaries = []
+
+    const savedDictionaries = JSON.parse(localStorage.getItem('dictionaries'))
+
+    if (savedDictionaries) {
+      // Check if current dictionary already exists within the saved ones,
+      // and if it does, replace it with the updated one,
+      // otherwise just append updated one to existing array
+      const currentDictionaryIndex = savedDictionaries.findIndex(
+        dictionary => dictionary.metadata.id === id,
+      )
+
+      updatedDictionaries =
+        currentDictionaryIndex >= 0
+          ? savedDictionaries.splice(
+              currentDictionaryIndex,
+              1,
+              updatedDictionary,
+            )
+          : [...savedDictionaries, updatedDictionary]
+    } else {
+      updatedDictionaries = [updatedDictionary]
+    }
+
+    localStorage.setItem('dictionaries', JSON.stringify(updatedDictionaries))
   }
 
   const handleDeleteDictionary = () => {}
