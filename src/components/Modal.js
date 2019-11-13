@@ -4,7 +4,7 @@ import uuid from 'uuid/v4'
 import validateDictionary from 'utils/validators'
 import { DICTIONARIES } from 'utils/constants'
 
-function Modal() {
+function Modal({ selectedDictionary, closeModal }) {
   const emptyRow = {
     domain: '',
     range: '',
@@ -155,6 +155,10 @@ function Modal() {
     // TODO: close modal
   }
 
+  const handleCloseModal = () => {
+    closeModal()
+  }
+
   return createPortal(
     <div>
       <h2>Add new dictionary</h2>
@@ -170,7 +174,7 @@ function Modal() {
         </div>
       </form>
       {table.map(({ domain, range, errors }, index) => (
-        <div key={index}>
+        <div key={domain + index}>
           <label htmlFor="domain">Domain</label>
           <input
             type="text"
@@ -204,6 +208,7 @@ function Modal() {
         Save
       </button>
       <button onClick={handleDeleteDictionary}>Delete</button>
+      <button onClick={handleCloseModal}>Close</button>
     </div>,
     document.body,
   )
