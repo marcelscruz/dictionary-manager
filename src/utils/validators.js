@@ -1,44 +1,48 @@
-function validateDuplicates(row, lastTableRow) {
+function validateDuplicates(outerRow, innerRow) {
   const { errors } = this
-  const { domain, range } = row
+  const { domain: outerDomain, range: outerRange } = outerRow
+  const { domain: innerDomain, range: innerRange } = innerRow
 
   // Check if domain + range already exist
-  if (domain === lastTableRow.domain && range === lastTableRow.range) {
+  if (outerDomain === innerDomain && outerRange === innerRange) {
     errors.duplicate = true
   }
 }
 
-function validateForks(row, lastTableRow) {
+function validateForks(outerRow, innerRow) {
   const { errors } = this
-  const { domain } = row
+  const { domain: outerDomain } = outerRow
+  const { domain: innerDomain } = innerRow
 
   // Check if domain already exists
-  if (domain === lastTableRow.domain) {
+  if (outerDomain === innerDomain) {
     errors.fork = true
   }
 }
 
-function validateCycles(row, lastTableRow) {
+function validateCycles(outerRow, innerRow) {
   const { errors } = this
-  const { domain, range } = row
+  const { domain: outerDomain, range: outerRange } = outerRow
+  const { domain: innerDomain, range: innerRange } = innerRow
 
   // Check if current domain is equal to last table item range and vice-versa
-  if (domain === lastTableRow.range && range === lastTableRow.domain) {
+  if (outerDomain === innerRange && outerRange === innerDomain) {
     errors.cycle = true
   }
 }
 
-function validateChains(row, lastTableRow) {
+function validateChains(outerRow, innerRow) {
   const { errors } = this
-  const { domain, range } = row
+  const { domain: outerDomain, range: outerRange } = outerRow
+  const { domain: innerDomain, range: innerRange } = innerRow
 
   // Check if current domain is equal to last table item range or vice-versa
-  if (domain === lastTableRow.range || range === lastTableRow.domain) {
+  if (outerDomain === innerRange || outerRange === innerDomain) {
     errors.chain = true
   }
 }
 
-export default function validateDictionary(dictionary) {
+export default function validateDictionary(outerRow, table, outerIndex) {
   const errors = {
     duplicate: false,
     fork: false,
@@ -46,18 +50,19 @@ export default function validateDictionary(dictionary) {
     chain: false,
   }
 
-  const table = dictionary.table
-  const lastTableRow = table[table.length - 1]
+  // Compare row passed as parameter to all other rows, except itself
+  table.forEach((innerRow, innerIndex) => {
+    // Skip if it's comparing the same row
+    if (outerIndex === innerIndex) return
 
-  table.forEach((row, index) => {
-    // Don't run if current item is the last item
-    if (index !== table.length - 1) {
-      validateDuplicates.call({ errors }, row, lastTableRow)
-      validateForks.call({ errors }, row, lastTableRow)
-      validateCycles.call({ errors }, row, lastTableRow)
-      validateChains.call({ errors }, row, lastTableRow)
-    }
+    validateDuplicates.call({ errors }, outerRow, innerRow)
+    validateForks.call({ errors }, outerRow, innerRow)
+    validateCycles.call({ errors }, outerRow, innerRow)
+    validateChains.call({ errors }, outerRow, innerRow)
   })
 
-  return errors
+  // Check if any error key has a truthy value
+  const hasError = Object.values(errors).some(error => error)
+
+  return hasError && errors
 }
