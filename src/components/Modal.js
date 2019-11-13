@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import uuid from 'uuid/v4'
 import validateDictionary from 'utils/validators'
+import { DICTIONARIES } from 'utils/constants'
 
 function Modal() {
   const emptyRow = {
@@ -17,6 +18,11 @@ function Modal() {
   const [table, setTable] = useState([emptyRow])
   const [hasErrors, setHasErrors] = useState(false)
   const [hasEmptyField, setHasEmptyFields] = useState(false)
+
+  // Store values passed as props if it's editing mode
+  useEffect(() => {
+    // TODO: store values
+  }, [])
 
   // Keep track if there are errors or empty fields in the dictionary
   useEffect(() => {
@@ -107,7 +113,7 @@ function Modal() {
 
     let updatedDictionaries = []
 
-    const savedDictionaries = JSON.parse(localStorage.getItem('dictionaries'))
+    const savedDictionaries = JSON.parse(localStorage.getItem(DICTIONARIES))
 
     if (savedDictionaries) {
       // Check if current dictionary already exists within the saved ones,
@@ -129,10 +135,25 @@ function Modal() {
       updatedDictionaries = [updatedDictionary]
     }
 
-    localStorage.setItem('dictionaries', JSON.stringify(updatedDictionaries))
+    localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
+
+    // TODO: close modal
   }
 
-  const handleDeleteDictionary = () => {}
+  // Only accessible if editing existing dictionary
+  const handleDeleteDictionary = () => {
+    const id = metadata.id
+
+    const savedDictionaries = JSON.parse(localStorage.getItem(DICTIONARIES))
+
+    const updatedDictionaries =
+      savedDictionaries.filter(dictionary => dictionary.metadata.id !== id) ||
+      []
+
+    localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
+
+    // TODO: close modal
+  }
 
   return createPortal(
     <div>
