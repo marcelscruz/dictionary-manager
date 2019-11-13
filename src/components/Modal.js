@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import validateDictionary from 'utils/validators'
 
@@ -8,7 +8,24 @@ function Modal() {
     range: '',
   }
 
+  const [title, setTitle] = useState('')
   const [table, setTable] = useState([emptyRow])
+  const [hasErrors, setHasErrors] = useState(false)
+  const [hasEmptyField, setHasEmptyFields] = useState(false)
+
+  // Keep track if there are errors or empty fields in the dictionary
+  useEffect(() => {
+    let hasErrors = table.some(row => row.errors)
+    let hasEmptyField = table.some(row => !row.domain || !row.range)
+    setHasErrors(hasErrors)
+    setHasEmptyFields(hasEmptyField)
+  }, [table])
+
+  const handleTitleChange = e => {
+    const title = e.target.value
+
+    setTitle(title)
+  }
 
   const handleAddRow = () => {
     setTable([...table, emptyRow])
@@ -36,7 +53,8 @@ function Modal() {
     const updatedTable = [...table]
     updatedTable.splice(index, 1, updatedRow)
 
-    setTable(updatedTable)
+    setTable(validate(updatedTable))
+    // setTable(updatedTable)
   }
 
   const handleError = (errors, table, index) => {
@@ -50,10 +68,6 @@ function Modal() {
     updatedTable.splice(index, 1, updatedRow)
 
     return updatedTable
-  }
-
-  const handleBlur = () => {
-    setTable(validate(table))
   }
 
   // Validates row contents
@@ -73,23 +87,49 @@ function Modal() {
     return updatedTable
   }
 
+  const handleSaveDictionary = () => {
+    const dictionary = {
+      title,
+      table,
+    }
+
+    console.log('dictionary ->', dictionary)
+  }
+
+  const handleDeleteDictionary = () => {}
+
   return createPortal(
     <div>
       <h2>Add new dictionary</h2>
+      <form>
+        <div>
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            name="title"
+            value={title}
+            onChange={handleTitleChange}
+          />
+        </div>
+      </form>
       {table.map(({ domain, range, errors }, index) => (
-        <div key={index} onBlur={handleBlur}>
+        <div key={index}>
+          <label htmlFor="domain">Domain</label>
           <input
             type="text"
             name="domain"
             value={domain}
             onChange={handleInputChange.bind(null, index)}
           />
+
+          <label htmlFor="range">Range</label>
           <input
             type="text"
             name="range"
             value={range}
             onChange={handleInputChange.bind(null, index)}
           />
+
           <button onClick={handleRemoveRow.bind(null, index)}>
             Remove row
           </button>
@@ -100,6 +140,13 @@ function Modal() {
         </div>
       ))}
       <button onClick={handleAddRow}>Add row</button>
+      <button
+        onClick={handleSaveDictionary}
+        disabled={hasErrors || hasEmptyField}
+      >
+        Save
+      </button>
+      <button onClick={handleDeleteDictionary}>Delete</button>
     </div>,
     document.body,
   )
