@@ -61,11 +61,9 @@ function Modal() {
     table.forEach((row, index) => {
       const errors = validateDictionary(row, table, index)
 
-      if (errors) {
-        // Pass newly created table array (updatedTable) that will be
-        // updated with errors object to later be set into state
-        updatedTable = handleError(errors, updatedTable, index)
-      }
+      // Pass newly created table array (updatedTable) that will be
+      // updated with errors object to later be set into state
+      updatedTable = handleError(errors, updatedTable, index)
     })
 
     setTable(updatedTable)
