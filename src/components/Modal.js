@@ -18,24 +18,23 @@ function Modal() {
     const updatedTable = [...table]
     updatedTable.splice(index, 1)
 
-    // Always keep at least one empty row
-    updatedTable.length === 0 ? setTable([emptyRow]) : setTable(updatedTable)
-
-    // Validate again but now without the just deleted row
-
-    // TODO: this function doesn't work if next line is uncommented
-    // handleValidation()
+    updatedTable.length === 0
+      ? setTable([emptyRow]) // Always keep at least one empty row
+      : setTable(validate(updatedTable)) // Validate without the just deleted row
   }
 
   const handleInputChange = (index, e) => {
     const fieldName = e.target.name
     const fieldValue = e.target.value
 
-    const updatedTable = [...table]
-    updatedTable[index] = {
-      ...updatedTable[index],
+    const updatedRow = {
+      ...table[index],
       [fieldName]: fieldValue,
     }
+
+    // Remove previous row and add updated one
+    const updatedTable = [...table]
+    updatedTable.splice(index, 1, updatedRow)
 
     setTable(updatedTable)
   }
@@ -53,12 +52,17 @@ function Modal() {
     return updatedTable
   }
 
+  const handleBlur = () => {
+    setTable(validate(table))
+  }
+
   // Validates row contents
-  const handleValidation = () => {
+  const validate = table => {
     let updatedTable = [...table]
 
     // Run validation for each row
     table.forEach((row, index) => {
+      // Errors is either an object or undefined
       const errors = validateDictionary(row, table, index)
 
       // Pass newly created table array (updatedTable) that will be
@@ -66,14 +70,14 @@ function Modal() {
       updatedTable = handleError(errors, updatedTable, index)
     })
 
-    setTable(updatedTable)
+    return updatedTable
   }
 
   return createPortal(
     <div>
       <h2>Add new dictionary</h2>
       {table.map(({ domain, range, errors }, index) => (
-        <div key={index} onBlur={handleValidation.bind(null, index)}>
+        <div key={index} onBlur={handleBlur}>
           <input
             type="text"
             name="domain"
