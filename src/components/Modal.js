@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import uuid from 'uuid/v4'
 import validateDictionary from 'utils/validators'
-import { DICTIONARIES } from 'utils/constants'
 
-function Modal({ selectedDictionary, closeModal }) {
+function Modal({
+  selectedDictionary,
+  saveDictionary,
+  deleteDictionary,
+  closeModal,
+  openPrompt,
+}) {
   const emptyRow = {
     domain: '',
     range: '',
@@ -103,60 +107,23 @@ function Modal({ selectedDictionary, closeModal }) {
   }
 
   const handleSaveDictionary = () => {
-    const id = metadata.id || uuid()
-    const timestamp = metadata.timestamp || new Date()
+    // Check and alert if there are empty fields
 
-    const updatedDictionary = {
-      metadata: {
-        id,
-        timestamp,
-      },
-      title,
-      table,
-    }
+    // if (hasEmptyField) {
+    //   openPrompt({
+    //     text:
+    //       'Rows with empty fields will be discarded. Are you sure you want to proceed?',
+    //     confirmButtonText: 'Confirm',
+    //     cancelButtonText: 'Go back',
+    //   })
+    // }
 
-    let updatedDictionaries = []
-
-    const savedDictionaries = JSON.parse(localStorage.getItem(DICTIONARIES))
-
-    if (savedDictionaries) {
-      // Check if current dictionary already exists within the saved ones,
-      // and if it does, replace it with the updated one,
-      // otherwise just append updated one to existing array
-      const currentDictionaryIndex = savedDictionaries.findIndex(
-        dictionary => dictionary.metadata.id === id,
-      )
-
-      updatedDictionaries =
-        currentDictionaryIndex >= 0
-          ? savedDictionaries.splice(
-              currentDictionaryIndex,
-              1,
-              updatedDictionary,
-            )
-          : [...savedDictionaries, updatedDictionary]
-    } else {
-      updatedDictionaries = [updatedDictionary]
-    }
-
-    localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
-
-    closeModal(true)
+    saveDictionary({ metadata, title, table })
   }
 
   // Only accessible if editing existing dictionary
   const handleDeleteDictionary = () => {
-    const id = metadata.id
-
-    const savedDictionaries = JSON.parse(localStorage.getItem(DICTIONARIES))
-
-    const updatedDictionaries =
-      savedDictionaries.filter(dictionary => dictionary.metadata.id !== id) ||
-      []
-
-    localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
-
-    closeModal(true)
+    deleteDictionary({ metadata })
   }
 
   const handleCloseModal = () => {
@@ -198,17 +165,16 @@ function Modal({ selectedDictionary, closeModal }) {
           <button onClick={handleRemoveRow.bind(null, index)}>
             Remove row
           </button>
-          {errors &&
-            Object.entries(errors).map(
-              ([name, isTrue]) => isTrue && <span key={name}>{name}</span>,
-            )}
+          <div>
+            {errors &&
+              Object.entries(errors).map(
+                ([name, isTrue]) => isTrue && <span key={name}>{name}</span>,
+              )}
+          </div>
         </div>
       ))}
       <button onClick={handleAddRow}>Add row</button>
-      <button
-        onClick={handleSaveDictionary}
-        disabled={hasErrors || hasEmptyField}
-      >
+      <button onClick={handleSaveDictionary} disabled={hasErrors}>
         Save
       </button>
       <button onClick={handleDeleteDictionary}>Delete</button>
