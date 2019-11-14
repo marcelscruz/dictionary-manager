@@ -21,8 +21,12 @@ function Modal({ selectedDictionary, closeModal }) {
 
   // Store values passed as props if it's editing mode
   useEffect(() => {
-    // TODO: store values
-  }, [])
+    const { metadata, title, table } = selectedDictionary
+
+    metadata && setMetadata(metadata)
+    title && setTitle(title)
+    table && setTable(table)
+  }, [selectedDictionary])
 
   // Keep track if there are errors or empty fields in the dictionary
   useEffect(() => {
