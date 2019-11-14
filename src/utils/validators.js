@@ -1,3 +1,5 @@
+import capitalise from 'utils/capitalise'
+
 function validateDuplicates(
   { outerDomain, outerRange },
   { innerDomain, innerRange },
@@ -43,7 +45,7 @@ function validateChains(
   }
 }
 
-export default function validateDictionary(outerRow, table, outerIndex) {
+export default function(outerRow, table, outerIndex) {
   const errors = {
     duplicate: false,
     fork: false,
@@ -56,8 +58,10 @@ export default function validateDictionary(outerRow, table, outerIndex) {
     // Skip if it's comparing the same row
     if (outerIndex === innerIndex) return
 
-    const { domain: outerDomain, range: outerRange } = outerRow
-    const { domain: innerDomain, range: innerRange } = innerRow
+    const outerDomain = capitalise(outerRow.domain)
+    const outerRange = capitalise(outerRow.range)
+    const innerDomain = capitalise(innerRow.domain)
+    const innerRange = capitalise(innerRow.range)
 
     // Skip if any of the values is empty, so validation
     // only occurs when both fields have values
