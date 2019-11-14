@@ -62,7 +62,6 @@ yarn build
 
 - React
 - create-react-app
-- ES6
 - styled-components
 
 ---
