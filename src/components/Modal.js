@@ -137,7 +137,7 @@ function Modal({ selectedDictionary, closeModal }) {
 
     localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
 
-    // TODO: close modal
+    closeModal(true)
   }
 
   // Only accessible if editing existing dictionary
@@ -152,7 +152,7 @@ function Modal({ selectedDictionary, closeModal }) {
 
     localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
 
-    // TODO: close modal
+    closeModal(true)
   }
 
   const handleCloseModal = () => {

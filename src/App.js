@@ -9,11 +9,16 @@ function App() {
   const [selectedDictionary, setSelectedDictionary] = useState({})
 
   useEffect(() => {
+    loadDictionaries()
+  }, [])
+
+  const loadDictionaries = () => {
+    setIsLoading(true)
     const savedDictionaries = JSON.parse(localStorage.getItem(DICTIONARIES))
 
     savedDictionaries && setDictionaries(savedDictionaries)
     setIsLoading(false)
-  }, [])
+  }
 
   const handleEditDictionary = index => {
     const selectedDictionary = dictionaries[index]
@@ -26,8 +31,9 @@ function App() {
     setIsModalOpen(true)
   }
 
-  const handleCloseModal = () => {
+  const handleCloseModal = hasChanges => {
     setSelectedDictionary({})
+    hasChanges && loadDictionaries()
     setIsModalOpen(false)
   }
 
