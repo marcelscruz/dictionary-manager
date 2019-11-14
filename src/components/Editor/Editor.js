@@ -7,7 +7,7 @@ import { SAVE, DELETE } from 'utils/constants'
 export function Editor({
   selectedDictionary,
   saveDictionary,
-  closeModal,
+  closeEditor,
   openPrompt,
 }) {
   const emptyRow = {
@@ -143,8 +143,8 @@ export function Editor({
     })
   }
 
-  const handleCloseModal = () => {
-    closeModal()
+  const handleCloseEditor = () => {
+    closeEditor()
   }
 
   return createPortal(
@@ -196,7 +196,7 @@ export function Editor({
       </button>
       {isEditing && <button onClick={handleDeleteDictionary}>Delete</button>}
 
-      <button onClick={handleCloseModal}>Close</button>
+      <button onClick={handleCloseEditor}>Close</button>
     </div>,
     document.body,
   )

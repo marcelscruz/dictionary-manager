@@ -5,7 +5,7 @@ import { DICTIONARIES } from 'utils/constants'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isEditorOpen, setIsEditorOpen] = useState(false)
   const [isPromptOpen, setIsPromptOpen] = useState(false)
   const [dictionaries, setDictionaries] = useState([])
   const [selectedDictionary, setSelectedDictionary] = useState({})
@@ -27,17 +27,17 @@ function App() {
     const selectedDictionary = dictionaries[index]
 
     setSelectedDictionary(selectedDictionary)
-    handleOpenModal()
+    handleOpenEditor()
   }
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true)
+  const handleOpenEditor = () => {
+    setIsEditorOpen(true)
   }
 
-  const handleCloseModal = hasChanges => {
+  const handleCloseEditor = hasChanges => {
     setSelectedDictionary({})
     hasChanges && loadDictionaries()
-    setIsModalOpen(false)
+    setIsEditorOpen(false)
   }
 
   const handleOpenPrompt = settings => {
@@ -91,7 +91,7 @@ function App() {
     localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
 
     isPromptOpen && handleClosePrompt()
-    isModalOpen && handleCloseModal(true)
+    isEditorOpen && handleCloseEditor(true)
   }
 
   const handleDeleteDictionary = ({ metadata }) => {
@@ -106,7 +106,7 @@ function App() {
     localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
 
     isPromptOpen && handleClosePrompt()
-    isModalOpen && handleCloseModal(true)
+    isEditorOpen && handleCloseEditor(true)
   }
 
   return (
@@ -116,7 +116,7 @@ function App() {
       ) : (
         <>
           <h1>Dictionary manager</h1>
-          <button onClick={handleOpenModal}>Add dictionary</button>
+          <button onClick={handleOpenEditor}>Add dictionary</button>
           {dictionaries.map(({ metadata, title, table }, index) => (
             <div
               key={metadata.id}
@@ -132,11 +132,11 @@ function App() {
               ))}
             </div>
           ))}
-          {isModalOpen && (
+          {isEditorOpen && (
             <Editor
               selectedDictionary={selectedDictionary}
               saveDictionary={handleSaveDictionary}
-              closeModal={handleCloseModal}
+              closeEditor={handleCloseEditor}
               openPrompt={handleOpenPrompt}
             />
           )}
