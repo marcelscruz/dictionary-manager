@@ -109,18 +109,20 @@ function Modal({
   }
 
   const handleSaveDictionary = () => {
-    // Check and alert if there are empty fields
-
-    // if (hasEmptyField) {
-    //   openPrompt({
-    //     text:
-    //       'Rows with empty fields will be discarded. Are you sure you want to proceed?',
-    //     confirmButtonText: 'Confirm',
-    //     cancelButtonText: 'Go back',
-    //   })
-    // }
-
-    saveDictionary({ metadata, title, table })
+    // Alert if there are empty fields that will be discarded
+    if (hasEmptyField) {
+      openPrompt(
+        {
+          text:
+            'Rows with empty fields will be discarded. Are you sure you want to proceed?',
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Go back',
+        },
+        { metadata, title, table },
+      )
+    } else {
+      saveDictionary({ metadata, title, table })
+    }
   }
 
   // Only accessible if editing existing dictionary

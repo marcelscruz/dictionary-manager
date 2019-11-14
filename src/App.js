@@ -41,8 +41,16 @@ function App() {
     setIsModalOpen(false)
   }
 
-  const handleOpenPrompt = (text, confirmButtonText, cancelButtonText) => {
-    setPromptSettings({ text, confirmButtonText, cancelButtonText })
+  const handleOpenPrompt = (
+    { text, confirmButtonText, cancelButtonText },
+    updatedDictionary,
+  ) => {
+    setPromptSettings({
+      text,
+      confirmButtonText,
+      cancelButtonText,
+      updatedDictionary,
+    })
     setIsPromptOpen(true)
   }
 
@@ -55,13 +63,16 @@ function App() {
     const id = metadata.id || uuid()
     const timestamp = metadata.timestamp || new Date()
 
+    // Filter out rows with empty fields
+    const filteredTable = table.filter(row => row.domain && row.range)
+
     const updatedDictionary = {
       metadata: {
         id,
         timestamp,
       },
       title,
-      table,
+      table: filteredTable,
     }
 
     let updatedDictionaries = []
@@ -88,7 +99,8 @@ function App() {
 
     localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
 
-    handleCloseModal(true)
+    isPromptOpen && handleClosePrompt()
+    isModalOpen && handleCloseModal(true)
   }
 
   const handleDeleteDictionary = ({ metadata }) => {
@@ -137,7 +149,13 @@ function App() {
               openPrompt={handleOpenPrompt}
             />
           )}
-          {isPromptOpen && <Prompt settings={promptSettings} />}
+          {isPromptOpen && (
+            <Prompt
+              settings={promptSettings}
+              saveDictionary={handleSaveDictionary}
+              closePrompt={handleClosePrompt}
+            />
+          )}
         </>
       )}
     </>
