@@ -2,7 +2,12 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import { SAVE, DELETE } from 'utils/constants'
 
-function Prompt({ settings, saveDictionary, deleteDictionary, closePrompt }) {
+export function Prompt({
+  settings,
+  saveDictionary,
+  deleteDictionary,
+  closePrompt,
+}) {
   const { text, confirmButtonText, cancelButtonText, action, data } = settings
 
   const handleConfirm = () => {

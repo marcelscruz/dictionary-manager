@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import validateDictionary from 'utils/validators'
 import uuid from 'uuid/v4'
+import validateDictionary from 'utils/validators'
 import { SAVE, DELETE } from 'utils/constants'
 
-function Modal({ selectedDictionary, saveDictionary, closeModal, openPrompt }) {
+export function Editor({
+  selectedDictionary,
+  saveDictionary,
+  closeModal,
+  openPrompt,
+}) {
   const emptyRow = {
     domain: '',
     range: '',
@@ -197,4 +202,4 @@ function Modal({ selectedDictionary, saveDictionary, closeModal, openPrompt }) {
   )
 }
 
-export default Modal
+export default Editor

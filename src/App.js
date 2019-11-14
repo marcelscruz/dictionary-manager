@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Modal from 'components/Modal'
-import Prompt from 'components/Prompt'
-import { DICTIONARIES } from 'utils/constants'
 import uuid from 'uuid/v4'
+import { Editor, Prompt } from 'components'
+import { DICTIONARIES } from 'utils/constants'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -134,7 +133,7 @@ function App() {
             </div>
           ))}
           {isModalOpen && (
-            <Modal
+            <Editor
               selectedDictionary={selectedDictionary}
               saveDictionary={handleSaveDictionary}
               closeModal={handleCloseModal}
