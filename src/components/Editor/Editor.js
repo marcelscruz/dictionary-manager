@@ -45,8 +45,8 @@ export function Editor({
 
   // Keep track if there are errors or empty fields in the dictionary
   useEffect(() => {
-    let hasErrors = table.some(row => row.errors)
-    let hasEmptyField = table.some(row => !row.domain || !row.range)
+    const hasErrors = table.some(row => row.errors)
+    const hasEmptyField = table.some(row => !row.domain || !row.range)
     setHasErrors(hasErrors)
     setHasEmptyFields(hasEmptyField)
   }, [table])
