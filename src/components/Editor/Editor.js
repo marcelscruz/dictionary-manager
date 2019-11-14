@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import PropTypes from 'prop-types'
 import uuid from 'uuid/v4'
 import validateDictionary from 'utils/validators'
 import { SAVE, DELETE } from 'utils/constants'
@@ -203,3 +204,10 @@ export function Editor({
 }
 
 export default Editor
+
+Editor.propTypes = {
+  selectedDictionary: PropTypes.object.isRequired,
+  saveDictionary: PropTypes.func.isRequired,
+  closeEditor: PropTypes.func.isRequired,
+  openPrompt: PropTypes.func.isRequired,
+}

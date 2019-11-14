@@ -1,5 +1,6 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
+import PropTypes from 'prop-types'
 import { SAVE, DELETE } from 'utils/constants'
 
 export function Prompt({
@@ -33,3 +34,10 @@ export function Prompt({
 }
 
 export default Prompt
+
+Prompt.propTypes = {
+  settings: PropTypes.object.isRequired,
+  saveDictionary: PropTypes.func.isRequired,
+  deleteDictionary: PropTypes.func.isRequired,
+  closePrompt: PropTypes.func.isRequired,
+}
