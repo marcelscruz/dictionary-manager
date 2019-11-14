@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import validateDictionary from 'utils/validators'
+import uuid from 'uuid/v4'
 
 function Modal({
   selectedDictionary,
@@ -12,6 +13,7 @@ function Modal({
   const emptyRow = {
     domain: '',
     range: '',
+    id: uuid(),
   }
 
   const [metadata, setMetadata] = useState({
@@ -144,8 +146,8 @@ function Modal({
           />
         </div>
       </form>
-      {table.map(({ domain, range, errors }, index) => (
-        <div key={domain + index}>
+      {table.map(({ domain, range, id, errors }, index) => (
+        <div key={id}>
           <label htmlFor="domain">Domain</label>
           <input
             type="text"

@@ -113,14 +113,14 @@ function App() {
         <>
           <h1>Dictionary manager</h1>
           <button onClick={handleOpenModal}>Add dictionary</button>
-          {dictionaries.map(({ title, table }, index) => (
+          {dictionaries.map(({ metadata, title, table }, index) => (
             <div
-              key={title + index}
+              key={metadata.id}
               onClick={handleEditDictionary.bind(null, index)}
             >
               <h2>{title || 'Untitled'}</h2>
               {table.map(({ domain, range }, index) => (
-                <div key={domain + index}>
+                <div key={domain + metadata.id}>
                   <span>{domain}</span>
                   <span> -> </span>
                   <span>{range}</span>
