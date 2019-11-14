@@ -41,16 +41,8 @@ function App() {
     setIsModalOpen(false)
   }
 
-  const handleOpenPrompt = (
-    { text, confirmButtonText, cancelButtonText },
-    updatedDictionary,
-  ) => {
-    setPromptSettings({
-      text,
-      confirmButtonText,
-      cancelButtonText,
-      updatedDictionary,
-    })
+  const handleOpenPrompt = settings => {
+    setPromptSettings(settings)
     setIsPromptOpen(true)
   }
 
@@ -114,7 +106,8 @@ function App() {
 
     localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
 
-    handleCloseModal(true)
+    isPromptOpen && handleClosePrompt()
+    isModalOpen && handleCloseModal(true)
   }
 
   return (
@@ -144,7 +137,6 @@ function App() {
             <Modal
               selectedDictionary={selectedDictionary}
               saveDictionary={handleSaveDictionary}
-              deleteDictionary={handleDeleteDictionary}
               closeModal={handleCloseModal}
               openPrompt={handleOpenPrompt}
             />
@@ -153,6 +145,7 @@ function App() {
             <Prompt
               settings={promptSettings}
               saveDictionary={handleSaveDictionary}
+              deleteDictionary={handleDeleteDictionary}
               closePrompt={handleClosePrompt}
             />
           )}

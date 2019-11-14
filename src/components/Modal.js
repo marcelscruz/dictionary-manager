@@ -2,14 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import validateDictionary from 'utils/validators'
 import uuid from 'uuid/v4'
+import { SAVE, DELETE } from 'utils/constants'
 
-function Modal({
-  selectedDictionary,
-  saveDictionary,
-  deleteDictionary,
-  closeModal,
-  openPrompt,
-}) {
+function Modal({ selectedDictionary, saveDictionary, closeModal, openPrompt }) {
   const emptyRow = {
     domain: '',
     range: '',
@@ -119,15 +114,14 @@ function Modal({
   const handleSaveDictionary = () => {
     // Alert if there are empty fields that will be discarded
     if (hasEmptyField) {
-      openPrompt(
-        {
-          text:
-            'Rows with empty fields will be discarded. Are you sure you want to proceed?',
-          confirmButtonText: 'Confirm',
-          cancelButtonText: 'Go back',
-        },
-        { metadata, title, table },
-      )
+      openPrompt({
+        text:
+          'Rows with empty fields will be discarded. Are you sure you want to proceed?',
+        confirmButtonText: 'Save',
+        cancelButtonText: 'Go back',
+        action: SAVE,
+        data: { metadata, title, table },
+      })
     } else {
       saveDictionary({ metadata, title, table })
     }
@@ -135,7 +129,13 @@ function Modal({
 
   // Only accessible if editing existing dictionary
   const handleDeleteDictionary = () => {
-    deleteDictionary({ metadata })
+    openPrompt({
+      text: 'Are you sure?',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Go back',
+      action: DELETE,
+      data: { metadata },
+    })
   }
 
   const handleCloseModal = () => {

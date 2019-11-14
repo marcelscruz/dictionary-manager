@@ -1,27 +1,27 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
+import { SAVE, DELETE } from 'utils/constants'
 
-function Prompt({ settings, saveDictionary, closePrompt }) {
-  const {
-    text,
-    confirmButtonText,
-    cancelButtonText,
-    updatedDictionary,
-  } = settings
+function Prompt({ settings, saveDictionary, deleteDictionary, closePrompt }) {
+  const { text, confirmButtonText, cancelButtonText, action, data } = settings
 
-  const handleSaveDictionary = () => {
-    saveDictionary(updatedDictionary)
+  const handleConfirm = () => {
+    if (action === SAVE) {
+      saveDictionary(data)
+    } else if (action === DELETE) {
+      deleteDictionary(data)
+    }
   }
 
-  const handleClosePrompt = () => {
+  const handleCancel = () => {
     closePrompt()
   }
 
   return createPortal(
     <div>
       <h3>{text}</h3>
-      <button onClick={handleSaveDictionary}>{confirmButtonText}</button>
-      <button onClick={handleClosePrompt}>{cancelButtonText}</button>
+      <button onClick={handleConfirm}>{confirmButtonText}</button>
+      <button onClick={handleCancel}>{cancelButtonText}</button>
     </div>,
     document.body,
   )
