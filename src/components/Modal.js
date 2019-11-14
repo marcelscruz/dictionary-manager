@@ -24,14 +24,22 @@ function Modal({
   const [table, setTable] = useState([emptyRow])
   const [hasErrors, setHasErrors] = useState(false)
   const [hasEmptyField, setHasEmptyFields] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
   // Store values passed as props if it's editing mode
   useEffect(() => {
-    const { metadata, title, table } = selectedDictionary
+    const isEditing =
+      Object.entries(selectedDictionary).length !== 0 &&
+      selectedDictionary.constructor === Object
 
-    metadata && setMetadata(metadata)
-    title && setTitle(title)
-    table && setTable(table)
+    if (isEditing) {
+      const { metadata, title, table } = selectedDictionary
+
+      metadata && setMetadata(metadata)
+      title && setTitle(title)
+      table && setTable(table)
+      setIsEditing(true)
+    }
   }, [selectedDictionary])
 
   // Keep track if there are errors or empty fields in the dictionary
@@ -181,7 +189,8 @@ function Modal({
       <button onClick={handleSaveDictionary} disabled={hasErrors}>
         Save
       </button>
-      <button onClick={handleDeleteDictionary}>Delete</button>
+      {isEditing && <button onClick={handleDeleteDictionary}>Delete</button>}
+
       <button onClick={handleCloseModal}>Close</button>
     </div>,
     document.body,
