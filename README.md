@@ -1,6 +1,6 @@
 # Dictionary Manager
 
-Create and manage your normalising dictionaries easily with Dictionary Manager.
+It became easier to create and manage your normalising dictionaries with Dictionary Manager.
 
 ---
 
@@ -63,7 +63,7 @@ yarn build
 - React
 - create-react-app
 - ES6
-- style-components
+- styled-components
 
 ---
 
