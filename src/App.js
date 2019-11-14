@@ -69,21 +69,19 @@ function App() {
     const savedDictionaries = JSON.parse(localStorage.getItem(DICTIONARIES))
 
     if (savedDictionaries) {
-      // Check if current dictionary already exists within the saved ones,
-      // and if it does, replace it with the updated one,
-      // otherwise just append updated one to existing array
+      // Check if current dictionary already exists within the saved ones
       const currentDictionaryIndex = savedDictionaries.findIndex(
         dictionary => dictionary.metadata.id === id,
       )
 
-      updatedDictionaries =
-        currentDictionaryIndex >= 0
-          ? savedDictionaries.splice(
-              currentDictionaryIndex,
-              1,
-              updatedDictionary,
-            )
-          : [...savedDictionaries, updatedDictionary]
+      if (currentDictionaryIndex >= 0) {
+        // Replace previous dictionary with updated one
+        savedDictionaries.splice(currentDictionaryIndex, 1, updatedDictionary)
+        updatedDictionaries = [...savedDictionaries]
+      } else {
+        // Append updated one to existing array
+        updatedDictionaries = [...savedDictionaries, updatedDictionary]
+      }
     } else {
       updatedDictionaries = [updatedDictionary]
     }
