@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { ThemeProvider } from 'styled-components/macro'
 import uuid from 'uuid/v4'
-import { Editor, Prompt } from 'components'
+import Normalize from 'react-normalize'
+import { Editor, Prompt, Sidebar, LeftPanel, RightPanel } from 'components'
 import { DICTIONARIES } from 'utils/constants'
+import GlobalStyle from 'utils/globalStyle'
+import theme from 'utils/theme'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -110,47 +114,52 @@ function App() {
   }
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <Normalize />
+      <GlobalStyle />
       {isLoading ? (
         <h1>Loading</h1>
       ) : (
         <>
-          <h1>Dictionary manager</h1>
-          <button onClick={handleOpenEditor}>Add dictionary</button>
-          {dictionaries.map(({ metadata, title, table }, index) => (
-            <div
-              key={metadata.id}
-              onClick={handleEditDictionary.bind(null, index)}
-            >
-              <h2>{title || 'Untitled'}</h2>
-              {table.map(({ domain, range }, index) => (
-                <div key={domain + metadata.id}>
-                  <span>{domain}</span>
-                  <span> -> </span>
-                  <span>{range}</span>
-                </div>
-              ))}
-            </div>
-          ))}
-          {isEditorOpen && (
-            <Editor
-              selectedDictionary={selectedDictionary}
-              saveDictionary={handleSaveDictionary}
-              closeEditor={handleCloseEditor}
-              openPrompt={handleOpenPrompt}
-            />
-          )}
-          {isPromptOpen && (
-            <Prompt
-              settings={promptSettings}
-              saveDictionary={handleSaveDictionary}
-              deleteDictionary={handleDeleteDictionary}
-              closePrompt={handleClosePrompt}
-            />
-          )}
+          <LeftPanel>
+            <Sidebar openEditor={handleCloseEditor} />
+          </LeftPanel>
+          <RightPanel>
+            {dictionaries.map(({ metadata, title, table }, index) => (
+              <div
+                key={metadata.id}
+                onClick={handleEditDictionary.bind(null, index)}
+              >
+                <h2>{title || 'Untitled'}</h2>
+                {table.map(({ domain, range }, index) => (
+                  <div key={domain + metadata.id}>
+                    <span>{domain}</span>
+                    <span> -> </span>
+                    <span>{range}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+            {isEditorOpen && (
+              <Editor
+                selectedDictionary={selectedDictionary}
+                saveDictionary={handleSaveDictionary}
+                closeEditor={handleCloseEditor}
+                openPrompt={handleOpenPrompt}
+              />
+            )}
+            {isPromptOpen && (
+              <Prompt
+                settings={promptSettings}
+                saveDictionary={handleSaveDictionary}
+                deleteDictionary={handleDeleteDictionary}
+                closePrompt={handleClosePrompt}
+              />
+            )}
+          </RightPanel>
         </>
       )}
-    </>
+    </ThemeProvider>
   )
 }
 
