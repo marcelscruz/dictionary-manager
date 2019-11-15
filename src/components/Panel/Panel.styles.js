@@ -3,6 +3,7 @@ import styled from 'styled-components/macro'
 export const LeftPanel = styled.aside`
   background: ${({ theme }) => theme.colours.orange};
   height: 100%;
+  margin-right: 7px;
   padding: 60px 30px;
   width: 380px;
 `

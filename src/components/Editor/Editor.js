@@ -11,6 +11,7 @@ export function Editor({
   saveDictionary,
   closeEditor,
   openPrompt,
+  isEditorOpen,
 }) {
   const emptyRow = {
     domain: '',
@@ -149,8 +150,8 @@ export function Editor({
     closeEditor()
   }
 
-  return createPortal(
-    <Overlay>
+  return (
+    <Overlay isEditorOpen={isEditorOpen}>
       <h2>Add new dictionary</h2>
       <form>
         <div>
@@ -199,8 +200,7 @@ export function Editor({
       {isEditing && <button onClick={handleDeleteDictionary}>Delete</button>}
 
       <button onClick={handleCloseEditor}>Close</button>
-    </Overlay>,
-    document.body,
+    </Overlay>
   )
 }
 

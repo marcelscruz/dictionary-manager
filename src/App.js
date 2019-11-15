@@ -136,14 +136,13 @@ function App() {
               dictionaries={dictionaries}
               editDictionary={handleEditDictionary}
             />
-            {isEditorOpen && (
-              <Editor
-                selectedDictionary={selectedDictionary}
-                saveDictionary={handleSaveDictionary}
-                closeEditor={handleCloseEditor}
-                openPrompt={handleOpenPrompt}
-              />
-            )}
+            <Editor
+              selectedDictionary={selectedDictionary}
+              saveDictionary={handleSaveDictionary}
+              closeEditor={handleCloseEditor}
+              openPrompt={handleOpenPrompt}
+              isEditorOpen={isEditorOpen}
+            />
             {isPromptOpen && (
               <Prompt
                 settings={promptSettings}
