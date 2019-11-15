@@ -1,6 +1,10 @@
 import { createGlobalStyle } from 'styled-components/macro'
 
 export default createGlobalStyle`
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     background: ${({ theme }) => theme.colours.beige};
     height: 100vh;

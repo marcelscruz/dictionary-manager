@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { ThemeProvider } from 'styled-components/macro'
 import uuid from 'uuid/v4'
 import Normalize from 'react-normalize'
-import { Editor, Prompt, Sidebar, LeftPanel, RightPanel } from 'components'
+import {
+  Editor,
+  Overview,
+  Prompt,
+  Sidebar,
+  LeftPanel,
+  RightPanel,
+} from 'components'
 import { DICTIONARIES } from 'utils/constants'
 import GlobalStyle from 'utils/globalStyle'
 import theme from 'utils/theme'
@@ -25,33 +32,6 @@ function App() {
 
     savedDictionaries && setDictionaries(savedDictionaries)
     setIsLoading(false)
-  }
-
-  const handleEditDictionary = index => {
-    const selectedDictionary = dictionaries[index]
-
-    setSelectedDictionary(selectedDictionary)
-    handleOpenEditor()
-  }
-
-  const handleOpenEditor = () => {
-    setIsEditorOpen(true)
-  }
-
-  const handleCloseEditor = hasChanges => {
-    setSelectedDictionary({})
-    hasChanges && loadDictionaries()
-    setIsEditorOpen(false)
-  }
-
-  const handleOpenPrompt = settings => {
-    setPromptSettings(settings)
-    setIsPromptOpen(true)
-  }
-
-  const handleClosePrompt = () => {
-    setPromptSettings({})
-    setIsPromptOpen(false)
   }
 
   const handleSaveDictionary = ({ metadata, title, table }) => {
@@ -113,6 +93,33 @@ function App() {
     isEditorOpen && handleCloseEditor(true)
   }
 
+  const handleEditDictionary = index => {
+    const selectedDictionary = dictionaries[index]
+
+    setSelectedDictionary(selectedDictionary)
+    handleOpenEditor()
+  }
+
+  const handleOpenEditor = () => {
+    setIsEditorOpen(true)
+  }
+
+  const handleCloseEditor = hasChanges => {
+    setSelectedDictionary({})
+    hasChanges && loadDictionaries()
+    setIsEditorOpen(false)
+  }
+
+  const handleOpenPrompt = settings => {
+    setPromptSettings(settings)
+    setIsPromptOpen(true)
+  }
+
+  const handleClosePrompt = () => {
+    setPromptSettings({})
+    setIsPromptOpen(false)
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Normalize />
@@ -122,24 +129,13 @@ function App() {
       ) : (
         <>
           <LeftPanel>
-            <Sidebar openEditor={handleCloseEditor} />
+            <Sidebar openEditor={handleOpenEditor} />
           </LeftPanel>
           <RightPanel>
-            {dictionaries.map(({ metadata, title, table }, index) => (
-              <div
-                key={metadata.id}
-                onClick={handleEditDictionary.bind(null, index)}
-              >
-                <h2>{title || 'Untitled'}</h2>
-                {table.map(({ domain, range }, index) => (
-                  <div key={domain + metadata.id}>
-                    <span>{domain}</span>
-                    <span> -> </span>
-                    <span>{range}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
+            <Overview
+              dictionaries={dictionaries}
+              editDictionary={handleEditDictionary}
+            />
             {isEditorOpen && (
               <Editor
                 selectedDictionary={selectedDictionary}

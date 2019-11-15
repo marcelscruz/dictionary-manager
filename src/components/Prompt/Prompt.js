@@ -2,6 +2,7 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
 import { SAVE, DELETE } from 'utils/constants'
+import { Overlay } from './Prompt.styles'
 
 export function Prompt({
   settings,
@@ -24,11 +25,11 @@ export function Prompt({
   }
 
   return createPortal(
-    <div>
+    <Overlay>
       <h3>{text}</h3>
       <button onClick={handleConfirm}>{confirmButtonText}</button>
       <button onClick={handleCancel}>{cancelButtonText}</button>
-    </div>,
+    </Overlay>,
     document.body,
   )
 }

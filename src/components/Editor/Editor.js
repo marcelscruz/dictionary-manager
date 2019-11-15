@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import uuid from 'uuid/v4'
 import validateDictionary from 'utils/validators'
 import { SAVE, DELETE } from 'utils/constants'
+import { Overlay } from './Editor.styles'
 
 export function Editor({
   selectedDictionary,
@@ -149,7 +150,7 @@ export function Editor({
   }
 
   return createPortal(
-    <div>
+    <Overlay>
       <h2>Add new dictionary</h2>
       <form>
         <div>
@@ -198,7 +199,7 @@ export function Editor({
       {isEditing && <button onClick={handleDeleteDictionary}>Delete</button>}
 
       <button onClick={handleCloseEditor}>Close</button>
-    </div>,
+    </Overlay>,
     document.body,
   )
 }

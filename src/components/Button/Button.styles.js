@@ -3,11 +3,11 @@ import colours from 'utils/colours'
 
 const borderColourIn = keyframes`
   40% {
-     border-color: ${colours.purple};
+    border-color: ${colours.purple};
   }
 
   100% {
-     border-color: ${colours.purple};
+    border-color: ${colours.purple};
   }
 `
 

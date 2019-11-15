@@ -1,4 +1,5 @@
 export * from './Editor/Editor'
+export * from './Overview/Overview'
 export * from './Prompt/Prompt'
 export * from './Sidebar/Sidebar'
 

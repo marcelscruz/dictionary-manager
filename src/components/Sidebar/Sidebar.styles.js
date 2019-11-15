@@ -8,5 +8,6 @@ export const Title = styled.h1`
   font-size: 3.5em;
   letter-spacing: 1.5px;
   line-height: 55px;
+  margin-top: 0;
   margin-bottom: 60px;
 `
