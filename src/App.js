@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { ThemeProvider } from 'styled-components/macro'
 import uuid from 'uuid/v4'
 import Normalize from 'react-normalize'
 import {
@@ -12,7 +11,6 @@ import {
 } from 'components'
 import { DICTIONARIES } from 'utils/constants'
 import GlobalStyle from 'utils/globalStyle'
-import theme from 'utils/theme'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -121,7 +119,7 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Normalize />
       <GlobalStyle />
       {isLoading ? (
@@ -154,7 +152,7 @@ function App() {
           </RightPanel>
         </>
       )}
-    </ThemeProvider>
+    </>
   )
 }
 

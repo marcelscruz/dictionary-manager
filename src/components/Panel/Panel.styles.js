@@ -1,7 +1,8 @@
 import styled from 'styled-components/macro'
+import { colours } from 'utils/theme'
 
 export const LeftPanel = styled.aside`
-  background: ${({ theme }) => theme.colours.orange};
+  background: ${colours.orange};
   height: 100%;
   margin-right: 7px;
   padding: 60px 30px;
@@ -9,7 +10,7 @@ export const LeftPanel = styled.aside`
 `
 
 export const RightPanel = styled.main`
-  background: ${({ theme }) => theme.colours.purple};
+  background: ${colours.purple};
   display: flex;
   flex-grow: 1;
   height: 100%;

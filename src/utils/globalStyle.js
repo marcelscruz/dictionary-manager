@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components/macro'
+import { colours } from 'utils/theme'
 
 export default createGlobalStyle`
   * {
@@ -6,7 +7,7 @@ export default createGlobalStyle`
   }
 
   body {
-    background: ${({ theme }) => theme.colours.beige};
+    background: ${colours.beige};
     height: 100vh;
     overflow: hidden;
     padding: 7px 0 0 7px;

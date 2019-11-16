@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro'
 import Masonry from 'react-masonry-css'
+import { colours, fonts } from 'utils/theme'
 
 export const Grid = styled(Masonry).attrs(({ breakpointCols }) => ({
   breakpointCols,
@@ -16,7 +17,7 @@ export const Grid = styled(Masonry).attrs(({ breakpointCols }) => ({
 `
 
 export const Card = styled.article`
-  background: ${({ theme }) => theme.colours.beige};
+  background: ${colours.beige};
   border: 1px solid white;
   cursor: pointer;
   margin-bottom: 20px;
@@ -31,31 +32,31 @@ export const Card = styled.article`
 `
 
 export const DictionaryTitle = styled.h2`
-  color: ${({ theme }) => theme.colours.orange};
-  font-family: ${({ theme }) => theme.fonts.primary};
+  color: ${colours.orange};
+  font-family: ${fonts.primary};
   margin: 0 0 10px;
 `
 
 export const PublishedDate = styled.h3`
-  color: ${({ theme }) => theme.colours.black};
-  font-family: ${({ theme }) => theme.fonts.secondary};
+  color: ${colours.black};
+  font-family: ${fonts.secondary};
   font-size: 12px;
   margin: 0 0 20px;
   opacity: 0.3;
 `
 
 export const DictionaryContainer = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.colours.lightGrey};
+  border-top: 1px solid ${colours.lightGrey};
   display: flex;
   padding: 5px 10px;
 
   &:last-of-type {
-    border-bottom: 1px solid ${({ theme }) => theme.colours.lightGrey};
+    border-bottom: 1px solid ${colours.lightGrey};
   }
 
   span {
-    color: ${({ theme }) => theme.colours.black};
-    font-family: ${({ theme }) => theme.fonts.secondary};
+    color: ${colours.black};
+    font-family: ${fonts.secondary};
     letter-spacing: 0.6px;
   }
 `

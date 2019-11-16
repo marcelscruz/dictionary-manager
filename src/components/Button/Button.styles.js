@@ -1,7 +1,7 @@
 import styled, { css, keyframes } from 'styled-components/macro'
-import colours from 'utils/colours'
+import { colours, fonts } from 'utils/theme'
 
-const borderColourIn = keyframes`
+const addBorderColour = keyframes`
   40% {
     border-color: ${colours.purple};
   }
@@ -14,21 +14,21 @@ const borderColourIn = keyframes`
 export const Button = styled.button`
   background: none;
   border: none;
-  color: ${({ theme }) => theme.colours.beige};
+  color: ${colours.beige};
   cursor: pointer;
-  font-family: ${({ theme }) => theme.fonts.primary};
+  font-family: ${fonts.primary};
   font-weight: 600;
   outline: none;
   text-transform: uppercase;
 
-  ${({ nav, theme }) =>
+  ${({ nav }) =>
     nav &&
     css`
       padding-left: 4px;
 
       &::before {
         content: '';
-        border-left: 3px solid ${theme.colours.beige}};
+        border-left: 3px solid ${colours.beige}};
         transition: all 1s ease-out;
       }
     `}
@@ -38,7 +38,7 @@ export const Button = styled.button`
       nav &&
       css`
         &::before {
-          animation: ${borderColourIn} 1s forwards;
+          animation: ${addBorderColour} 1s forwards;
         }
       `}
   }

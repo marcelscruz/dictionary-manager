@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
 import uuid from 'uuid/v4'
 import validateDictionary from 'utils/validators'
