@@ -1,57 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import uuid from 'uuid/v4'
-import validateDictionary from 'utils/validators'
-import { SAVE, DELETE } from 'utils/constants'
 import { Overlay } from './Editor.styles'
+import validateDictionary from 'utils/validators'
+import { emptyRow } from 'utils/defaultValues'
 
 export function Editor({
-  selectedDictionary,
-  saveDictionary,
   closeEditor,
-  openPrompt,
   isEditorOpen,
+  title,
+  setTitle,
+  table,
+  setTable,
 }) {
-  const emptyRow = {
-    domain: '',
-    range: '',
-    id: uuid(),
-  }
-
-  const [metadata, setMetadata] = useState({
-    id: '',
-    timestamp: '',
-  })
-  const [title, setTitle] = useState('')
-  const [table, setTable] = useState([emptyRow])
-  const [hasErrors, setHasErrors] = useState(false)
-  const [hasEmptyField, setHasEmptyFields] = useState(false)
-  const [isEditing, setIsEditing] = useState(false)
-
-  // Store values passed as props if it's editing mode
-  useEffect(() => {
-    const isEditing =
-      Object.entries(selectedDictionary).length !== 0 &&
-      selectedDictionary.constructor === Object
-
-    if (isEditing) {
-      const { metadata, title, table } = selectedDictionary
-
-      metadata && setMetadata(metadata)
-      title && setTitle(title)
-      table && setTable(table)
-      setIsEditing(true)
-    }
-  }, [selectedDictionary])
-
-  // Keep track if there are errors or empty fields in the dictionary
-  useEffect(() => {
-    const hasErrors = table.some(row => row.errors)
-    const hasEmptyField = table.some(row => !row.domain || !row.range)
-    setHasErrors(hasErrors)
-    setHasEmptyFields(hasEmptyField)
-  }, [table])
-
   const handleTitleChange = e => {
     const title = e.target.value
 
@@ -85,7 +45,6 @@ export function Editor({
     updatedTable.splice(index, 1, updatedRow)
 
     setTable(validate(updatedTable))
-    // setTable(updatedTable)
   }
 
   const handleError = (errors, table, index) => {
@@ -116,33 +75,6 @@ export function Editor({
     })
 
     return updatedTable
-  }
-
-  const handleSaveDictionary = () => {
-    // Alert if there are empty fields that will be discarded
-    if (hasEmptyField) {
-      openPrompt({
-        text:
-          'Rows with empty fields will be discarded. Are you sure you want to proceed?',
-        confirmButtonText: 'Save',
-        cancelButtonText: 'Go back',
-        action: SAVE,
-        data: { metadata, title, table },
-      })
-    } else {
-      saveDictionary({ metadata, title, table })
-    }
-  }
-
-  // Only accessible if editing existing dictionary
-  const handleDeleteDictionary = () => {
-    openPrompt({
-      text: 'Are you sure?',
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Go back',
-      action: DELETE,
-      data: { metadata },
-    })
   }
 
   const handleCloseEditor = () => {
@@ -193,10 +125,6 @@ export function Editor({
         </div>
       ))}
       <button onClick={handleAddRow}>Add row</button>
-      <button onClick={handleSaveDictionary} disabled={hasErrors}>
-        Save
-      </button>
-      {isEditing && <button onClick={handleDeleteDictionary}>Delete</button>}
 
       <button onClick={handleCloseEditor}>Close</button>
     </Overlay>
@@ -206,8 +134,10 @@ export function Editor({
 export default Editor
 
 Editor.propTypes = {
-  selectedDictionary: PropTypes.object.isRequired,
-  saveDictionary: PropTypes.func.isRequired,
   closeEditor: PropTypes.func.isRequired,
-  openPrompt: PropTypes.func.isRequired,
+  isEditorOpen: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  setTitle: PropTypes.func.isRequired,
+  table: PropTypes.PropTypes.arrayOf(PropTypes.object).isRequired,
+  setTable: PropTypes.func.isRequired,
 }

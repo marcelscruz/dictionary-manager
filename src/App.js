@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import uuid from 'uuid/v4'
 import Normalize from 'react-normalize'
+import uuid from 'uuid/v4'
 import {
   Editor,
   Overview,
@@ -9,20 +9,31 @@ import {
   LeftPanel,
   RightPanel,
 } from 'components'
-import { DICTIONARIES } from 'utils/constants'
+import { DICTIONARIES, SAVE } from 'utils/constants'
 import GlobalStyle from 'utils/globalStyle'
+import { emptyMetadata, emptyRow } from 'utils/defaultValues'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [isEditorOpen, setIsEditorOpen] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
   const [isPromptOpen, setIsPromptOpen] = useState(false)
+  const [hasErrors, setHasErrors] = useState(false)
   const [dictionaries, setDictionaries] = useState([])
-  const [selectedDictionary, setSelectedDictionary] = useState({})
+  const [metadata, setMetadata] = useState(emptyMetadata)
+  const [title, setTitle] = useState('')
+  const [table, setTable] = useState([emptyRow])
   const [promptSettings, setPromptSettings] = useState({})
 
   useEffect(() => {
     loadDictionaries()
   }, [])
+
+  // Keep track if there are errors or empty fields in the dictionary
+  useEffect(() => {
+    const hasErrors = table.some(row => row.errors)
+    setHasErrors(hasErrors)
+  }, [table])
 
   const loadDictionaries = () => {
     setIsLoading(true)
@@ -32,7 +43,24 @@ function App() {
     setIsLoading(false)
   }
 
-  const handleSaveDictionary = ({ metadata, title, table }) => {
+  const validateToSave = () => {
+    const hasEmptyField = table.some(row => !row.domain || !row.range)
+
+    // Alert if there are empty fields that will be discarded
+    if (hasEmptyField) {
+      openPrompt({
+        text:
+          'Rows with empty fields will be discarded. Are you sure you want to proceed?',
+        confirmButtonText: 'Save',
+        cancelButtonText: 'Go back',
+        action: SAVE,
+      })
+    } else {
+      handleSaveDictionary()
+    }
+  }
+
+  const handleSaveDictionary = () => {
     const id = metadata.id || uuid()
     const timestamp = metadata.timestamp || new Date()
 
@@ -76,7 +104,7 @@ function App() {
     isEditorOpen && handleCloseEditor(true)
   }
 
-  const handleDeleteDictionary = ({ metadata }) => {
+  const handleDeleteDictionary = () => {
     const id = metadata.id
 
     const savedDictionaries = JSON.parse(localStorage.getItem(DICTIONARIES))
@@ -92,9 +120,12 @@ function App() {
   }
 
   const handleEditDictionary = index => {
-    const selectedDictionary = dictionaries[index]
+    const { metadata, title, table } = dictionaries[index]
 
-    setSelectedDictionary(selectedDictionary)
+    metadata && setMetadata(metadata)
+    title && setTitle(title)
+    table && setTable(table)
+    setIsEditing(true)
     handleOpenEditor()
   }
 
@@ -103,12 +134,15 @@ function App() {
   }
 
   const handleCloseEditor = hasChanges => {
-    setSelectedDictionary({})
+    setMetadata(emptyMetadata)
+    setTitle('')
+    setTable([emptyRow])
     hasChanges && loadDictionaries()
+    isEditing && setIsEditing(false)
     setIsEditorOpen(false)
   }
 
-  const handleOpenPrompt = settings => {
+  const openPrompt = settings => {
     setPromptSettings(settings)
     setIsPromptOpen(true)
   }
@@ -127,7 +161,14 @@ function App() {
       ) : (
         <>
           <LeftPanel>
-            <Sidebar openEditor={handleOpenEditor} />
+            <Sidebar
+              openEditor={handleOpenEditor}
+              validateToSave={validateToSave}
+              deleteDictionary={handleDeleteDictionary}
+              isEditorOpen={isEditorOpen}
+              isEditing={isEditing}
+              hasErrors={hasErrors}
+            />
           </LeftPanel>
           <RightPanel>
             <Overview
@@ -135,11 +176,12 @@ function App() {
               editDictionary={handleEditDictionary}
             />
             <Editor
-              selectedDictionary={selectedDictionary}
-              saveDictionary={handleSaveDictionary}
               closeEditor={handleCloseEditor}
-              openPrompt={handleOpenPrompt}
               isEditorOpen={isEditorOpen}
+              title={title}
+              setTitle={setTitle}
+              table={table}
+              setTable={setTable}
             />
             {isPromptOpen && (
               <Prompt

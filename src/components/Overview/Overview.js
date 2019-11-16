@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import {
   Grid,
@@ -41,3 +42,8 @@ export function Overview({ dictionaries, editDictionary }) {
 }
 
 export default Overview
+
+Overview.propTypes = {
+  dictionaries: PropTypes.array.isRequired,
+  editDictionary: PropTypes.func.isRequired,
+}

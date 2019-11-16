@@ -10,13 +10,13 @@ export function Prompt({
   deleteDictionary,
   closePrompt,
 }) {
-  const { text, confirmButtonText, cancelButtonText, action, data } = settings
+  const { text, confirmButtonText, cancelButtonText, action } = settings
 
   const handleConfirm = () => {
     if (action === SAVE) {
-      saveDictionary(data)
+      saveDictionary()
     } else if (action === DELETE) {
-      deleteDictionary(data)
+      deleteDictionary()
     }
   }
 
