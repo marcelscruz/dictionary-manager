@@ -12,3 +12,7 @@ export const Title = styled.h1`
   margin-top: 0;
   margin-bottom: 60px;
 `
+
+export const ButtonsContainer = styled.div`
+  position: relative;
+`

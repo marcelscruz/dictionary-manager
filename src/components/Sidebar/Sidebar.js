@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Button } from 'components'
-import { Title } from './Sidebar.styles'
+import { ButtonsContainer, Title } from './Sidebar.styles'
 
 export function Sidebar({
   openEditor,
@@ -15,26 +15,34 @@ export function Sidebar({
     <>
       <Title>Dictionary Manager</Title>
 
-      {isEditorOpen ? (
-        <>
-          <Button onClick={validateToSave} disabled={hasErrors} nav>
-            &nbsp; Save
-          </Button>
-          {isEditing && (
-            <>
-              <br />
-              <br />
-              <Button onClick={deleteDictionary} nav>
-                &nbsp; Delete
-              </Button>
-            </>
-          )}
-        </>
-      ) : (
-        <Button onClick={openEditor} nav>
+      <ButtonsContainer>
+        <Button onClick={openEditor} isEditorOpen={isEditorOpen} nav>
           &nbsp; Add dictionary
         </Button>
-      )}
+        <Button
+          onClick={validateToSave}
+          disabled={hasErrors}
+          isEditorOpen={isEditorOpen}
+          nav
+          deleteOrSave
+        >
+          &nbsp; Save
+        </Button>
+        {isEditing && (
+          <>
+            <br />
+            <br />
+            <Button
+              onClick={deleteDictionary}
+              isEditorOpen={isEditorOpen}
+              nav
+              deleteOrSave
+            >
+              &nbsp; Delete
+            </Button>
+          </>
+        )}
+      </ButtonsContainer>
     </>
   )
 }

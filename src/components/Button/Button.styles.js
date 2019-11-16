@@ -11,6 +11,16 @@ const addBorderColour = keyframes`
   }
 `
 
+const slideIn = keyframes`
+  0% {
+    transform: translateX(-500px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`
+
 export const Button = styled.button`
   background: none;
   border: none;
@@ -24,18 +34,51 @@ export const Button = styled.button`
   ${({ nav }) =>
     nav &&
     css`
+      left: 0;
+      opacity: 0;
       padding-left: 4px;
+      position: absolute;
 
       &::before {
         content: '';
         border-left: 3px solid ${colours.beige}};
-        transition: all 1s ease-out;
+        transition: border-color 1s ease-out;
+      }
+    `}
+
+  /* "Add dictionary" button slide in effect */
+  ${({ nav, deleteOrSave, isEditorOpen }) =>
+    nav &&
+    !deleteOrSave &&
+    !isEditorOpen &&
+    css`
+      animation: ${slideIn} 1s forwards;
+    `}
+
+  /* "Save" and "Delete" buttons slide in effect */
+  ${({ nav, deleteOrSave, isEditorOpen }) =>
+    nav &&
+    deleteOrSave &&
+    isEditorOpen &&
+    css`
+      animation: ${slideIn} 1s forwards;
+    `}
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      cursor: initial;
+      opacity: 0.3;
+
+      &::before {
+        transition: none;
       }
     `}
 
   &:hover {
-    ${({ nav }) =>
+    ${({ nav, disabled }) =>
       nav &&
+      !disabled &&
       css`
         &::before {
           animation: ${addBorderColour} 1s forwards;
