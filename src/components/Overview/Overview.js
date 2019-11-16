@@ -5,7 +5,7 @@ import {
   Grid,
   Card,
   DictionaryTitle,
-  DictionaryContainer,
+  Row,
   PublishedDate,
   Value,
   Arrow,
@@ -28,11 +28,11 @@ export function Overview({ dictionaries, editDictionary }) {
         <DictionaryTitle>{title || 'Untitled'}</DictionaryTitle>
         <PublishedDate>{publishedDate}</PublishedDate>
         {table.map(({ domain, range }) => (
-          <DictionaryContainer key={domain + metadata.id}>
+          <Row key={domain + metadata.id}>
             <Value>{domain}</Value>
             <Arrow> &#x2192; </Arrow>
             <Value>{range}</Value>
-          </DictionaryContainer>
+          </Row>
         ))}
       </Card>
     )

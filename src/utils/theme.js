@@ -4,6 +4,8 @@ export const colours = {
   orange: '#FC6C54',
   purple: '#49377B',
   lightGrey: '#eeeeee',
+  red: '#d75978',
+  green: '#00CAA8',
 }
 
 export const fonts = {

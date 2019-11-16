@@ -19,4 +19,9 @@ export default createGlobalStyle`
     height: 100%;
     width: 100%;
   }
+
+  button, input {
+    border: none;
+    outline: none;
+  }
 `

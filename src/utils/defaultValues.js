@@ -5,6 +5,7 @@ export const emptyRow = {
   range: '',
   id: uuid(),
 }
+
 export const emptyMetadata = {
   id: '',
   timestamp: '',

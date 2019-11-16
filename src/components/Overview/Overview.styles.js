@@ -45,7 +45,7 @@ export const PublishedDate = styled.h3`
   opacity: 0.3;
 `
 
-export const DictionaryContainer = styled.div`
+export const Row = styled.div`
   border-top: 1px solid ${colours.lightGrey};
   display: flex;
   padding: 5px 10px;
@@ -66,6 +66,9 @@ export const Value = styled.span`
 `
 
 export const Arrow = styled.span`
+  align-items: center;
+  display: flex;
+  justify-content: center;
   margin: 0 5px;
   text-align: center;
   width: 8%;

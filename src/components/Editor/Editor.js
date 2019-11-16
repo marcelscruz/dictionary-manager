@@ -1,37 +1,52 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Overlay } from './Editor.styles'
+import {
+  Container,
+  Title,
+  Form,
+  TitleInputContainer,
+  Label,
+  TitleInput,
+  RowsHeading,
+  Row,
+  ValueInput,
+  Arrow,
+  DeleteRowButton,
+  ErrorsContainer,
+  CloseButton,
+  X,
+  AddRowButton,
+} from './Editor.styles'
 import validateDictionary from 'utils/validators'
 import { emptyRow } from 'utils/defaultValues'
+import { colours } from 'utils/theme'
 
 export function Editor({
   closeEditor,
   isEditorOpen,
+  isEditing,
   title,
   setTitle,
   table,
   setTable,
 }) {
+  const [isTitleInputFocused, setIsTitleInputFocused] = useState(false)
+
+  useEffect(() => {
+    title && setIsTitleInputFocused(true)
+  })
+
   const handleTitleChange = e => {
+    e.preventDefault()
+
     const title = e.target.value
 
     setTitle(title)
   }
 
-  const handleAddRow = () => {
-    setTable([...table, emptyRow])
-  }
-
-  const handleRemoveRow = index => {
-    const updatedTable = [...table]
-    updatedTable.splice(index, 1)
-
-    updatedTable.length === 0
-      ? setTable([emptyRow]) // Always keep at least one empty row
-      : setTable(validate(updatedTable)) // Validate without the just deleted row
-  }
-
   const handleInputChange = (index, e) => {
+    e.preventDefault()
+
     const fieldName = e.target.name
     const fieldValue = e.target.value
 
@@ -45,6 +60,19 @@ export function Editor({
     updatedTable.splice(index, 1, updatedRow)
 
     setTable(validate(updatedTable))
+  }
+
+  const handleAddRow = () => {
+    setTable([...table, emptyRow])
+  }
+
+  const handleRemoveRow = index => {
+    const updatedTable = [...table]
+    updatedTable.splice(index, 1)
+
+    updatedTable.length === 0
+      ? setTable([emptyRow]) // Always keep at least one empty row
+      : setTable(validate(updatedTable)) // Validate without the just deleted row
   }
 
   const handleError = (errors, table, index) => {
@@ -81,53 +109,88 @@ export function Editor({
     closeEditor()
   }
 
+  const handleFormSubmit = e => {
+    e.preventDefault()
+  }
+
+  const handleTitleInputFocus = e => {
+    const eventType = e.type
+    if (eventType === 'focus') {
+      setIsTitleInputFocused(true)
+    } else if (eventType === 'blur' && !title) {
+      setIsTitleInputFocused(false)
+    }
+  }
+
   return (
-    <Overlay isEditorOpen={isEditorOpen}>
-      <h2>Add new dictionary</h2>
-      <form>
-        <div>
-          <label htmlFor="title">Title</label>
-          <input
+    <Container isEditorOpen={isEditorOpen}>
+      <CloseButton onClick={handleCloseEditor}>
+        <X colour={colours.beige} fontSize={35}>
+          &#xd7;
+        </X>
+      </CloseButton>
+
+      <Title>
+        {isEditing ? `Edit dictionary ${title && title}` : 'Add new dictionary'}
+      </Title>
+      <Form onSubmit={handleFormSubmit}>
+        <TitleInputContainer>
+          <Label
+            htmlFor="title"
+            isTitleInputFocused={isTitleInputFocused}
+            titleInput
+          >
+            Title
+          </Label>
+          <TitleInput
             type="text"
             name="title"
             value={title}
             onChange={handleTitleChange}
+            onFocus={handleTitleInputFocus}
+            onBlur={handleTitleInputFocus}
           />
-        </div>
-      </form>
-      {table.map(({ domain, range, id, errors }, index) => (
-        <div key={id}>
-          <label htmlFor="domain">Domain</label>
-          <input
-            type="text"
-            name="domain"
-            value={domain}
-            onChange={handleInputChange.bind(null, index)}
-          />
+        </TitleInputContainer>
+        <RowsHeading>Domain &#x2192; Range</RowsHeading>
+        {table.map(({ domain, range, id, errors }, index) => (
+          <Row key={id}>
+            <Label htmlFor="domain" hidden>
+              Domain
+            </Label>
+            <ValueInput
+              type="text"
+              name="domain"
+              value={domain}
+              onChange={handleInputChange.bind(null, index)}
+            />
 
-          <label htmlFor="range">Range</label>
-          <input
-            type="text"
-            name="range"
-            value={range}
-            onChange={handleInputChange.bind(null, index)}
-          />
+            <Arrow> &#x2192; </Arrow>
 
-          <button onClick={handleRemoveRow.bind(null, index)}>
-            Remove row
-          </button>
-          <div>
-            {errors &&
-              Object.entries(errors).map(
-                ([name, isTrue]) => isTrue && <span key={name}>{name}</span>,
-              )}
-          </div>
-        </div>
-      ))}
-      <button onClick={handleAddRow}>Add row</button>
-
-      <button onClick={handleCloseEditor}>Close</button>
-    </Overlay>
+            <Label htmlFor="range" hidden>
+              Range
+            </Label>
+            <ValueInput
+              type="text"
+              name="range"
+              value={range}
+              onChange={handleInputChange.bind(null, index)}
+            />
+            <DeleteRowButton onClick={handleRemoveRow.bind(null, index)}>
+              <X colour={colours.beige} fontSize={15}>
+                &#xd7;
+              </X>
+            </DeleteRowButton>
+            <ErrorsContainer>
+              {errors &&
+                Object.entries(errors).map(
+                  ([name, isTrue]) => isTrue && <span key={name}>{name} </span>,
+                )}
+            </ErrorsContainer>
+          </Row>
+        ))}
+        <AddRowButton onClick={handleAddRow}>&#x2b;</AddRowButton>
+      </Form>
+    </Container>
   )
 }
 
@@ -136,6 +199,7 @@ export default Editor
 Editor.propTypes = {
   closeEditor: PropTypes.func.isRequired,
   isEditorOpen: PropTypes.bool.isRequired,
+  isEditing: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   setTitle: PropTypes.func.isRequired,
   table: PropTypes.PropTypes.arrayOf(PropTypes.object).isRequired,

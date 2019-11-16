@@ -45,6 +45,7 @@ function App() {
 
   const validateToSave = () => {
     const hasEmptyField = table.some(row => !row.domain || !row.range)
+    console.log('validate :')
 
     // Alert if there are empty fields that will be discarded
     if (hasEmptyField) {
@@ -178,6 +179,7 @@ function App() {
             <Editor
               closeEditor={handleCloseEditor}
               isEditorOpen={isEditorOpen}
+              isEditing={isEditing}
               title={title}
               setTitle={setTitle}
               table={table}

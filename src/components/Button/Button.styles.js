@@ -23,12 +23,10 @@ const slideIn = keyframes`
 
 export const Button = styled.button`
   background: none;
-  border: none;
   color: ${colours.beige};
   cursor: pointer;
   font-family: ${fonts.primary};
   font-weight: 600;
-  outline: none;
   text-transform: uppercase;
 
   ${({ nav }) =>
