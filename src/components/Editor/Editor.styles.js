@@ -149,7 +149,7 @@ export const CloseButton = styled.div`
 `
 
 export const X = styled.span`
-  color: ${({ colour }) => colour} !important;
+  color: ${colours.beige} !important;
   font-size: ${({ fontSize }) => fontSize + 'px'};
 `
 

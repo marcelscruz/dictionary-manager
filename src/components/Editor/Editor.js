@@ -19,7 +19,6 @@ import {
 } from './Editor.styles'
 import validateDictionary from 'utils/validators'
 import { emptyRow } from 'utils/defaultValues'
-import { colours } from 'utils/theme'
 
 export function Editor({
   closeEditor,
@@ -127,9 +126,7 @@ export function Editor({
   return (
     <Container isEditorOpen={isEditorOpen}>
       <CloseButton onClick={handleCloseEditor}>
-        <X colour={colours.beige} fontSize={35}>
-          &#xd7;
-        </X>
+        <X fontSize={35}>&#xd7;</X>
       </CloseButton>
 
       <Title>
@@ -178,9 +175,7 @@ export function Editor({
               onChange={handleInputChange.bind(null, index)}
             />
             <DeleteRowButton onClick={handleRemoveRow.bind(null, index)}>
-              <X colour={colours.beige} fontSize={15}>
-                &#xd7;
-              </X>
+              <X fontSize={15}>&#xd7;</X>
             </DeleteRowButton>
             <ErrorsContainer>
               {errors &&

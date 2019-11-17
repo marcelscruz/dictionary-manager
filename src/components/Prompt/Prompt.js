@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
+import {
+  Container,
+  Overlay,
+  DialogBox,
+  Text,
+  ButtonsContainer,
+  Button,
+} from './Prompt.styles'
 import { SAVE, DELETE } from 'utils/constants'
-import { Overlay } from './Prompt.styles'
+import { colours } from 'utils/theme'
 
 export function Prompt({
   settings,
@@ -24,12 +32,36 @@ export function Prompt({
     closePrompt()
   }
 
+  const handleEsc = useCallback(
+    e => {
+      if (e.keyCode === 27) {
+        e.preventDefault()
+        closePrompt()
+        window.removeEventListener('keydown', handleEsc)
+      }
+    },
+    [closePrompt],
+  )
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEsc)
+  }, [handleEsc])
+
   return createPortal(
-    <Overlay>
-      <h3>{text}</h3>
-      <button onClick={handleConfirm}>{confirmButtonText}</button>
-      <button onClick={handleCancel}>{cancelButtonText}</button>
-    </Overlay>,
+    <Container onKeyPress={handleEsc}>
+      <Overlay onClick={handleCancel} onKeyPress={handleEsc} />
+      <DialogBox>
+        <Text>{text}</Text>
+        <ButtonsContainer>
+          <Button colour={colours.green} onClick={handleConfirm}>
+            {confirmButtonText}
+          </Button>
+          <Button colour={colours.red} onClick={handleCancel}>
+            {cancelButtonText}
+          </Button>
+        </ButtonsContainer>
+      </DialogBox>
+    </Container>,
     document.body,
   )
 }
