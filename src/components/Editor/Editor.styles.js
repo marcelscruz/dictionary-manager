@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components/macro'
 import { colours, fonts, spacing } from 'utils/theme'
 
 export const Container = styled.div`
-  background: white;
+  background: ${colours.beige};
   border-bottom: ${spacing.gutter} solid ${colours.purple};
   border-right: ${spacing.gutter} solid ${colours.purple};
   height: 100%;
@@ -38,6 +38,7 @@ export const TitleInputContainer = styled.div`
 `
 
 export const TitleInput = styled.input`
+  background: ${colours.beige};
   border-bottom: 2px solid ${colours.lightGrey};
   letter-spacing: 0.6px;
   width: 300px;
@@ -105,6 +106,7 @@ export const Row = styled.div`
 `
 
 export const ValueInput = styled.input`
+  background: ${colours.beige};
   letter-spacing: 0.6px;
   width: 46%;
 `
