@@ -6,6 +6,12 @@ export const colours = {
   lightGrey: '#eeeeee',
   red: '#d75978',
   green: '#00CAA8',
+  errors: {
+    0: '#FFBD5B',
+    1: '#FE8566',
+    2: '#D75978',
+    3: '#994283',
+  },
 }
 
 export const fonts = {

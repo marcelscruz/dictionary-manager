@@ -133,7 +133,19 @@ export const DeleteRowButton = styled.div`
   width: 17px;
 `
 
-export const ErrorsContainer = styled.div``
+export const ErrorsContainer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  /* height: 17px; */
+  right: -120px;
+  position: absolute;
+  width: 100px;
+`
+
+export const ErrorIcon = styled.div`
+  margin-right: 10px;
+`
 
 export const CloseButton = styled.div`
   align-items: center;

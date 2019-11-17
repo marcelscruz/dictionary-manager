@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faClone,
+  faCodeBranch,
+  faSyncAlt,
+  faLink,
+} from '@fortawesome/free-solid-svg-icons'
 import {
   Container,
   Title,
@@ -13,12 +20,14 @@ import {
   Arrow,
   DeleteRowButton,
   ErrorsContainer,
+  ErrorIcon,
   CloseButton,
   X,
   AddRowButton,
 } from './Editor.styles'
 import validateDictionary from 'utils/validators'
 import { emptyRow } from 'utils/defaultValues'
+import { colours } from 'utils/theme'
 
 export function Editor({
   closeEditor,
@@ -123,6 +132,33 @@ export function Editor({
     }
   }
 
+  const mapErrorToIcon = error => {
+    switch (error) {
+      case 'duplicate':
+        return {
+          icon: faClone,
+          colour: colours.errors[0],
+        }
+      case 'fork':
+        return {
+          icon: faCodeBranch,
+          colour: colours.errors[1],
+        }
+      case 'cycle':
+        return {
+          icon: faSyncAlt,
+          colour: colours.errors[2],
+        }
+      case 'chain':
+        return {
+          icon: faLink,
+          colour: colours.errors[3],
+        }
+      default:
+        break
+    }
+  }
+
   return (
     <Container isEditorOpen={isEditorOpen}>
       <CloseButton onClick={handleCloseEditor}>
@@ -180,7 +216,15 @@ export function Editor({
             <ErrorsContainer>
               {errors &&
                 Object.entries(errors).map(
-                  ([name, isTrue]) => isTrue && <span key={name}>{name} </span>,
+                  ([name, isTrue]) =>
+                    isTrue && (
+                      <ErrorIcon>
+                        <FontAwesomeIcon
+                          icon={mapErrorToIcon(name).icon}
+                          color={mapErrorToIcon(name).colour}
+                        />
+                      </ErrorIcon>
+                    ),
                 )}
             </ErrorsContainer>
           </Row>
