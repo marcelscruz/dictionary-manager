@@ -65,8 +65,8 @@ export const Label = styled.label`
       text-transform: uppercase;
       transition: all 0.5s;
 
-      ${({ isTitleInputFocused }) =>
-        isTitleInputFocused &&
+      ${({ shouldMoveTitleLabelUp }) =>
+        shouldMoveTitleLabelUp &&
         `
           font-size: 12px;
           letter-spacing: unset;

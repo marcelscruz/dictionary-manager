@@ -30,11 +30,11 @@ export function Editor({
   table,
   setTable,
 }) {
-  const [isTitleInputFocused, setIsTitleInputFocused] = useState(false)
+  const [shouldMoveTitleLabelUp, setShouldMoveTitleLabelUp] = useState(false)
 
   useEffect(() => {
-    title && setIsTitleInputFocused(true)
-  })
+    title && setShouldMoveTitleLabelUp(true)
+  }, [title])
 
   const handleTitleChange = e => {
     e.preventDefault()
@@ -63,7 +63,7 @@ export function Editor({
   }
 
   const handleAddRow = () => {
-    setTable([...table, emptyRow])
+    setTable([...table, emptyRow()])
   }
 
   const handleRemoveRow = index => {
@@ -71,7 +71,7 @@ export function Editor({
     updatedTable.splice(index, 1)
 
     updatedTable.length === 0
-      ? setTable([emptyRow]) // Always keep at least one empty row
+      ? setTable([emptyRow()]) // Always keep at least one empty row
       : setTable(validate(updatedTable)) // Validate without the just deleted row
   }
 
@@ -106,6 +106,8 @@ export function Editor({
   }
 
   const handleCloseEditor = () => {
+    setShouldMoveTitleLabelUp(false)
+
     closeEditor()
   }
 
@@ -116,9 +118,9 @@ export function Editor({
   const handleTitleInputFocus = e => {
     const eventType = e.type
     if (eventType === 'focus') {
-      setIsTitleInputFocused(true)
+      setShouldMoveTitleLabelUp(true)
     } else if (eventType === 'blur' && !title) {
-      setIsTitleInputFocused(false)
+      setShouldMoveTitleLabelUp(false)
     }
   }
 
@@ -137,7 +139,7 @@ export function Editor({
         <TitleInputContainer>
           <Label
             htmlFor="title"
-            isTitleInputFocused={isTitleInputFocused}
+            shouldMoveTitleLabelUp={shouldMoveTitleLabelUp}
             titleInput
           >
             Title

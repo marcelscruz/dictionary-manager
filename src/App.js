@@ -22,7 +22,7 @@ function App() {
   const [dictionaries, setDictionaries] = useState([])
   const [metadata, setMetadata] = useState(emptyMetadata)
   const [title, setTitle] = useState('')
-  const [table, setTable] = useState([emptyRow])
+  const [table, setTable] = useState([emptyRow()])
   const [promptSettings, setPromptSettings] = useState({})
 
   useEffect(() => {
@@ -45,7 +45,7 @@ function App() {
 
   const validateToSave = () => {
     const hasEmptyField = table.some(row => !row.domain || !row.range)
-    console.log('validate :')
+    console.log('validate :', table)
 
     // Alert if there are empty fields that will be discarded
     if (hasEmptyField) {
@@ -135,9 +135,11 @@ function App() {
   }
 
   const handleCloseEditor = hasChanges => {
+    // Reset editor
     setMetadata(emptyMetadata)
     setTitle('')
-    setTable([emptyRow])
+    setTable([emptyRow()])
+
     hasChanges && loadDictionaries()
     isEditing && setIsEditing(false)
     setIsEditorOpen(false)
