@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button } from 'components'
-import { ButtonsContainer, Title } from './Sidebar.styles'
+import { Title, ButtonsContainer, Button } from './Sidebar.styles'
 
 export function Sidebar({
   openEditor,

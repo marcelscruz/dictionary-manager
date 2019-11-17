@@ -1,5 +1,6 @@
 export const colours = {
   beige: '#FFFEF4',
+  beigeDisabled: 'rgba(255, 254, 244, 0.3)',
   black: '#222222',
   orange: '#FC6C54',
   purple: '#49377B',
