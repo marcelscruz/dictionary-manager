@@ -28,6 +28,9 @@ import {
 import validateDictionary from 'utils/validators'
 import { emptyRow } from 'utils/defaultValues'
 import { colours } from 'utils/theme'
+import { ERRORS } from 'utils/constants'
+
+const { DUPLICATE, FORK, CYCLE, CHAIN } = ERRORS
 
 export function Editor({
   closeEditor,
@@ -134,22 +137,22 @@ export function Editor({
 
   const mapErrorToIcon = error => {
     switch (error) {
-      case 'duplicate':
+      case DUPLICATE:
         return {
           icon: faClone,
           colour: colours.errors[0],
         }
-      case 'fork':
+      case FORK:
         return {
           icon: faCodeBranch,
           colour: colours.errors[1],
         }
-      case 'cycle':
+      case CYCLE:
         return {
           icon: faSyncAlt,
           colour: colours.errors[2],
         }
-      case 'chain':
+      case CHAIN:
         return {
           icon: faLink,
           colour: colours.errors[3],

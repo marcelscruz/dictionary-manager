@@ -1,4 +1,7 @@
 import capitalise from 'utils/capitalise'
+import { ERRORS } from 'utils/constants'
+
+const { DUPLICATE, FORK, CYCLE, CHAIN } = ERRORS
 
 function validateDuplicates(
   { outerDomain, outerRange },
@@ -8,7 +11,7 @@ function validateDuplicates(
 
   // Check if domain + range already exist
   if (outerDomain === innerDomain && outerRange === innerRange) {
-    errors.duplicate = true
+    errors[DUPLICATE] = true
   }
 }
 
@@ -17,7 +20,7 @@ function validateForks({ outerDomain }, { innerDomain }) {
 
   // Check if domain already exists
   if (outerDomain === innerDomain) {
-    errors.fork = true
+    errors[FORK] = true
   }
 }
 
@@ -29,7 +32,7 @@ function validateCycles(
 
   // Check if current domain is equal to last table item range and vice-versa
   if (outerDomain === innerRange && outerRange === innerDomain) {
-    errors.cycle = true
+    errors[CYCLE] = true
   }
 }
 
@@ -41,16 +44,16 @@ function validateChains(
 
   // Check if current domain is equal to last table item range or vice-versa
   if (outerDomain === innerRange || outerRange === innerDomain) {
-    errors.chain = true
+    errors[CHAIN] = true
   }
 }
 
 export default function(outerRow, table, outerIndex) {
   const errors = {
-    duplicate: false,
-    fork: false,
-    cycle: false,
-    chain: false,
+    [DUPLICATE]: false,
+    [FORK]: false,
+    [CYCLE]: false,
+    [CHAIN]: false,
   }
 
   // Compare row passed as parameter to all other rows, except itself
