@@ -10,6 +10,7 @@ export const Container = styled.div`
   position: absolute;
   top: 0;
   width: 100vw;
+  z-index: 10;
 `
 
 export const Overlay = styled.div`
@@ -29,7 +30,7 @@ export const DialogBox = styled.div`
   flex-direction: column;
   height: 250px;
   justify-content: space-between;
-  padding: 40px;
+  padding: 40px 60px;
   width: 400px;
   z-index: 1;
 `

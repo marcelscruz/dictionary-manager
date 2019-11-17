@@ -26,6 +26,8 @@ export function Prompt({
     } else if (action === DELETE) {
       deleteDictionary()
     }
+
+    closePrompt()
   }
 
   const handleCancel = () => {
@@ -53,10 +55,13 @@ export function Prompt({
       <DialogBox>
         <Text>{text}</Text>
         <ButtonsContainer>
-          <Button colour={colours.green} onClick={handleConfirm}>
+          <Button
+            colour={action === SAVE ? colours.green : colours.red}
+            onClick={handleConfirm}
+          >
             {confirmButtonText}
           </Button>
-          <Button colour={colours.red} onClick={handleCancel}>
+          <Button colour={'grey'} onClick={handleCancel}>
             {cancelButtonText}
           </Button>
         </ButtonsContainer>

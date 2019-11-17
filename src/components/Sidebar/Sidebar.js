@@ -1,15 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Title, ButtonsContainer, Button } from './Sidebar.styles'
+import { DELETE } from 'utils/constants'
 
 export function Sidebar({
   openEditor,
   validateToSave,
-  deleteDictionary,
+  openPrompt,
   isEditorOpen,
   isEditing,
   hasErrors,
 }) {
+  const handleDeleteDictionary = () => {
+    openPrompt({
+      text: 'Are you sure you want to delete this dictionary?',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Go back',
+      action: DELETE,
+    })
+  }
+
   return (
     <>
       <Title>Dictionary Manager</Title>
@@ -32,7 +42,7 @@ export function Sidebar({
             <br />
             <br />
             <Button
-              onClick={deleteDictionary}
+              onClick={handleDeleteDictionary}
               isEditorOpen={isEditorOpen}
               nav
               deleteOrSave
@@ -51,7 +61,7 @@ export default Sidebar
 Sidebar.propTypes = {
   openEditor: PropTypes.func.isRequired,
   validateToSave: PropTypes.func.isRequired,
-  deleteDictionary: PropTypes.func.isRequired,
+  openPrompt: PropTypes.func.isRequired,
   isEditorOpen: PropTypes.bool.isRequired,
   isEditing: PropTypes.bool.isRequired,
   hasErrors: PropTypes.bool.isRequired,

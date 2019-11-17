@@ -48,7 +48,7 @@ function App() {
 
     // Alert if there are empty fields that will be discarded
     if (hasEmptyField) {
-      openPrompt({
+      handleOpenPrompt({
         text:
           'Rows with empty fields will be discarded. Are you sure you want to proceed?',
         confirmButtonText: 'Save',
@@ -100,7 +100,6 @@ function App() {
 
     localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
 
-    isPromptOpen && handleClosePrompt()
     isEditorOpen && handleCloseEditor(true)
   }
 
@@ -115,7 +114,6 @@ function App() {
 
     localStorage.setItem(DICTIONARIES, JSON.stringify(updatedDictionaries))
 
-    isPromptOpen && handleClosePrompt()
     isEditorOpen && handleCloseEditor(true)
   }
 
@@ -144,7 +142,7 @@ function App() {
     setIsEditorOpen(false)
   }
 
-  const openPrompt = settings => {
+  const handleOpenPrompt = settings => {
     setPromptSettings(settings)
     setIsPromptOpen(true)
   }
@@ -166,7 +164,7 @@ function App() {
             <Sidebar
               openEditor={handleOpenEditor}
               validateToSave={validateToSave}
-              deleteDictionary={handleDeleteDictionary}
+              openPrompt={handleOpenPrompt}
               isEditorOpen={isEditorOpen}
               isEditing={isEditing}
               hasErrors={hasErrors}
