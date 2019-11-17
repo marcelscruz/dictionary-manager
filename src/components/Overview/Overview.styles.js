@@ -73,3 +73,19 @@ export const Arrow = styled.span`
   text-align: center;
   width: 8%;
 `
+
+export const NoEntriesContainer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  padding: 60px 100px;
+  width: 100%;
+`
+
+export const NoEntriesText = styled.h2`
+  color: ${colours.beige};
+  font-family: ${fonts.primary};
+  font-size: 30px;
+  letter-spacing: 0.6px;
+`

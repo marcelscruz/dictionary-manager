@@ -9,6 +9,8 @@ import {
   PublishedDate,
   Value,
   Arrow,
+  NoEntriesText,
+  NoEntriesContainer,
 } from './Overview.styles'
 
 export function Overview({ dictionaries, editDictionary }) {
@@ -38,7 +40,20 @@ export function Overview({ dictionaries, editDictionary }) {
     )
   })
 
-  return <Grid breakpointCols={gridBreakpoints}>{gridItems}</Grid>
+  return (
+    <>
+      {dictionaries.length > 0 ? (
+        <Grid breakpointCols={gridBreakpoints}>{gridItems}</Grid>
+      ) : (
+        <NoEntriesContainer>
+          <NoEntriesText>
+            No entries yet.
+            <br /> Why don't you create your first dictionary?
+          </NoEntriesText>
+        </NoEntriesContainer>
+      )}
+    </>
+  )
 }
 
 export default Overview
