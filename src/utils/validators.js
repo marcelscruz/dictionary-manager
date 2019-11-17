@@ -15,11 +15,14 @@ function validateDuplicates(
   }
 }
 
-function validateForks({ outerDomain }, { innerDomain }) {
+function validateForks(
+  { outerDomain, outerRange },
+  { innerDomain, innerRange },
+) {
   const { errors } = this
 
   // Check if domain already exists
-  if (outerDomain === innerDomain) {
+  if (outerDomain === innerDomain && outerRange !== innerRange) {
     errors[FORK] = true
   }
 }

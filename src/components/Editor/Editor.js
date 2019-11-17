@@ -165,7 +165,8 @@ export function Editor({
         return {
           icon: faLink,
           colour: colours.errors[3],
-          legend: 'Chain - A range value also being used as a domain',
+          legend:
+            'Chain - A range value also being used as a domain or vice-versa',
         }
       default:
         break
@@ -209,10 +210,11 @@ export function Editor({
               type="text"
               name="domain"
               value={domain}
+              hasError={errors}
               onChange={handleInputChange.bind(null, index)}
             />
 
-            <Arrow> &#x2192; </Arrow>
+            <Arrow hasError={errors}> &#x2192; </Arrow>
 
             <Label htmlFor="range" hidden>
               Range
@@ -221,6 +223,7 @@ export function Editor({
               type="text"
               name="range"
               value={range}
+              hasError={errors}
               onChange={handleInputChange.bind(null, index)}
             />
             <DeleteRowButton onClick={handleRemoveRow.bind(null, index)}>

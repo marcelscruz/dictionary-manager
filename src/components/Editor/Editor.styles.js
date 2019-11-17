@@ -40,7 +40,9 @@ export const TitleInputContainer = styled.div`
 export const TitleInput = styled.input`
   background: ${colours.beige};
   border-bottom: 2px solid ${colours.lightGrey};
+  color: ${colours.black};
   letter-spacing: 0.6px;
+  padding: 5px 10px;
   width: 300px;
 `
 
@@ -71,7 +73,7 @@ export const Label = styled.label`
         `
           font-size: 12px;
           letter-spacing: unset;
-          transform: translateY(-25px);
+          transform: translateY(-27px);
       `}
     `}
 `
@@ -107,12 +109,15 @@ export const Row = styled.div`
 
 export const ValueInput = styled.input`
   background: ${colours.beige};
+  color: ${({ hasError }) => (hasError ? colours.red : colours.black)};
   letter-spacing: 0.6px;
   width: 46%;
 `
 
 export const Arrow = styled.span`
   align-items: center;
+  color: ${({ hasError }) =>
+    hasError ? colours.red : colours.black} !important;
   display: flex;
   justify-content: center;
   margin: 0 5px;
