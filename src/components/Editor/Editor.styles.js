@@ -76,7 +76,7 @@ export const Label = styled.label`
     `}
 `
 
-export const RowsHeading = styled.span`
+export const Heading = styled.span`
   display: inline-block;
   font-family: ${fonts.primary};
   font-size: 12px;
@@ -179,4 +179,28 @@ export const AddRowButton = styled.div`
   margin-top: 10px;
   position: absolute;
   width: 17px;
+`
+
+export const ErrorsLegendContainer = styled.div`
+  margin-top: 80px;
+
+  svg {
+    /* display: block; */
+    margin: 5px 0;
+    width: 20px;
+  }
+`
+
+export const ErrorLegend = styled.div`
+  align-items: center;
+  display: flex;
+  position: relative;
+`
+
+export const ErrorText = styled.span`
+  color: ${colours.black};
+  font-family: ${fonts.primary};
+  font-size: 13px;
+  position: absolute;
+  left: 30px;
 `

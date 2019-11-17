@@ -1,7 +1,7 @@
 import capitalise from 'utils/capitalise'
-import { ERRORS } from 'utils/constants'
+import { errors } from 'utils/constants'
 
-const { DUPLICATE, FORK, CYCLE, CHAIN } = ERRORS
+const { DUPLICATE, FORK, CYCLE, CHAIN } = errors
 
 function validateDuplicates(
   { outerDomain, outerRange },

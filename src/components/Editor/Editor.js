@@ -14,7 +14,7 @@ import {
   TitleInputContainer,
   Label,
   TitleInput,
-  RowsHeading,
+  Heading,
   Row,
   ValueInput,
   Arrow,
@@ -24,13 +24,16 @@ import {
   CloseButton,
   X,
   AddRowButton,
+  ErrorsLegendContainer,
+  ErrorLegend,
+  ErrorText,
 } from './Editor.styles'
 import validateDictionary from 'utils/validators'
 import { emptyRow } from 'utils/defaultValues'
 import { colours } from 'utils/theme'
-import { ERRORS } from 'utils/constants'
+import { errors } from 'utils/constants'
 
-const { DUPLICATE, FORK, CYCLE, CHAIN } = ERRORS
+const { DUPLICATE, FORK, CYCLE, CHAIN } = errors
 
 export function Editor({
   closeEditor,
@@ -135,27 +138,34 @@ export function Editor({
     }
   }
 
-  const mapErrorToIcon = error => {
+  const mapErrorToMetadata = error => {
     switch (error) {
       case DUPLICATE:
         return {
           icon: faClone,
           colour: colours.errors[0],
+          legend:
+            'Duplicate - Two rows or more mapping the same combination of domain and range',
         }
       case FORK:
         return {
           icon: faCodeBranch,
           colour: colours.errors[1],
+          legend:
+            'Fork - Two rows or more with the same domain mapping to different ranges',
         }
       case CYCLE:
         return {
           icon: faSyncAlt,
           colour: colours.errors[2],
+          legend:
+            'Cycle - Domain A mapping to range B and domain B mapping to range A',
         }
       case CHAIN:
         return {
           icon: faLink,
           colour: colours.errors[3],
+          legend: 'Chain - A range value also being used as a domain',
         }
       default:
         break
@@ -189,7 +199,7 @@ export function Editor({
             onBlur={handleTitleInputFocus}
           />
         </TitleInputContainer>
-        <RowsHeading>Domain &#x2192; Range</RowsHeading>
+        <Heading>Domain &#x2192; Range</Heading>
         {table.map(({ domain, range, id, errors }, index) => (
           <Row key={id}>
             <Label htmlFor="domain" hidden>
@@ -221,10 +231,10 @@ export function Editor({
                 Object.entries(errors).map(
                   ([name, isTrue]) =>
                     isTrue && (
-                      <ErrorIcon>
+                      <ErrorIcon key={name}>
                         <FontAwesomeIcon
-                          icon={mapErrorToIcon(name).icon}
-                          color={mapErrorToIcon(name).colour}
+                          icon={mapErrorToMetadata(name).icon}
+                          color={mapErrorToMetadata(name).colour}
                         />
                       </ErrorIcon>
                     ),
@@ -234,6 +244,19 @@ export function Editor({
         ))}
         <AddRowButton onClick={handleAddRow}>&#x2b;</AddRowButton>
       </Form>
+
+      <ErrorsLegendContainer>
+        <Heading>Errors explanation</Heading>
+        {Object.values(errors).map(name => (
+          <ErrorLegend key={name}>
+            <FontAwesomeIcon
+              icon={mapErrorToMetadata(name).icon}
+              color={mapErrorToMetadata(name).colour}
+            />
+            <ErrorText>{mapErrorToMetadata(name).legend}</ErrorText>
+          </ErrorLegend>
+        ))}
+      </ErrorsLegendContainer>
     </Container>
   )
 }
